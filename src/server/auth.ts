@@ -23,13 +23,24 @@ declare module "next-auth" {
       id: string;
       // ...other properties
       // role: UserRole;
-    } & DefaultSession["user"];
+    } & DefaultSession["user"] &
+      User;
   }
 
-  // interface User {
-  //   // ...other properties
-  //   // role: UserRole;
-  // }
+  interface User {
+    status: string;
+    phoneNumber: string;
+    givenName: string;
+    familyName: string;
+    image: string;
+    region: string;
+    supportRoles: string;
+    possibleSupportRoles: string;
+    role: string;
+    protestDegree: string;
+    // ...other properties
+    // role: UserRole;
+  }
 }
 
 /**
@@ -42,10 +53,25 @@ export const authOptions: NextAuthOptions = {
     session({ session, user }) {
       if (session.user) {
         session.user.id = user.id;
+        session.user.status = user.status;
+        session.user.phoneNumber = user.phoneNumber;
+        session.user.givenName = user.givenName;
+        session.user.familyName = user.familyName;
+        session.user.image = user.image;
+        session.user.region = user.region;
+        session.user.supportRoles = user.supportRoles;
+        session.user.possibleSupportRoles = user.possibleSupportRoles;
+        session.user.role = user.role;
+        session.user.protestDegree = user.protestDegree;
         // session.user.role = user.role; <-- put other properties on the session here
       }
       return session;
     },
+  },
+  pages: {
+    signOut: "/auth/signout",
+    verifyRequest: "/auth/verify-request",
+    newUser: "/profile",
   },
   adapter: PrismaAdapter(prisma),
   providers: [

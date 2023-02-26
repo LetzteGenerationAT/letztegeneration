@@ -5,7 +5,7 @@ import LeftSidebar from "~/components/Dashboard/LeftSidebar";
 // import { useEffect } from 'react';
 // import { setRightDrawerIsOpen, removeNotificationMessage } from '@/src/features/common/headerSlice';
 // import { NotificationContainer, NotificationManager } from 'react-notifications';
-import "react-notifications/lib/notifications.css";
+// import "react-notifications/lib/notifications.css";
 import TopNavigation from "~/components/Dashboard/TopNavigation";
 import SuspenseContent from "~/components/Dashboard/SuspenseContent";
 

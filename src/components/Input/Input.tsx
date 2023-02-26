@@ -33,7 +33,7 @@ export default function Input({
         <span className="label-text text-base-content">{label}</span>
       </label>
       <input
-        className="input input-bordered w-full"
+        className="input-bordered input w-full"
         {...register(id, validation)}
         {...rest}
         type={type}

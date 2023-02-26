@@ -69,13 +69,15 @@ model User {
     status               UserStatus   @default(Pending)
     email                String?      @unique
     emailVerified        DateTime?
-    phone_number         String?      @unique
-    given_name           String?
-    family_name          String?
+    phoneNumber          String?      @unique
+    givenName            String?
+    familyName           String?
+    pronouns             String?
     image                String?
     region               String?
-    supportRoles         String[]     @default([])
-    possibleSupportRoles String[]     @default([])
+    supportRoles         String?
+    possibleSupportRoles String?
+    protestDegree        String?
     accounts             Account[]
     sessions             Session[]
     ringerNotes          RingerNote[]

@@ -22,6 +22,18 @@ export type User =
   | null
   | "SIGNUP";
 
+export type ProfileData = {
+  email: string;
+  phoneNumber: string;
+  givenName: string;
+  familyName: string;
+  region: string;
+  pronouns: string;
+  protestDegree: string;
+  possibleSupportRoles: string;
+  supportRoles: string;
+};
+
 export type StepOneData = {
   email: string;
   password: string;
@@ -47,8 +59,7 @@ export type ConfirmData = {
 };
 
 export type LoginData = {
-  phone_number: string;
-  password: string;
+  email: string;
 };
 
 export type RegisterFormData = StepOneData &

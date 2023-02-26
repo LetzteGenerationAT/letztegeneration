@@ -4,14 +4,17 @@
 import Image from "next/image";
 // import { useSelector, useDispatch } from 'react-redux';
 // import { setRightDrawerIsOpen } from '@/src/features/common/headerSlice';
-import BellIcon from "@heroicons/react/24/solid/BellIcon";
+// import BellIcon from "@heroicons/react/24/solid/BellIcon";
 import Bars3Icon from "@heroicons/react/24/solid/Bars3Icon";
 // import MoonIcon from "@heroicons/react/24/outline/MoonIcon";
 // import SunIcon from "@heroicons/react/24/outline/SunIcon";
 import Link from "next/link";
 import { useBoundStore } from "~/store";
+import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function TopNavigation() {
+  const router = useRouter();
   const setUserData = useBoundStore((state) => state.setUserData);
   // const dispatch = useDispatch();
   // const { noOfNotifications, pageTitle } = useSelector((state) => state.header);
@@ -28,17 +31,20 @@ export default function TopNavigation() {
   //   }
   // }, [currentTheme])
 
-  const logoutUser = () => {
+  const logoutUser = async () => {
     try {
-      void setUserData({ user: null });
+      await signOut();
     } catch (error) {
-      console.log("error signing out: ", error);
+      console.log(error);
+    } finally {
+      setUserData({ user: null });
+      router.push("/");
     }
   };
 
-  const openNotification = () => {
-    // dispatch(setRightDrawerIsOpen(true));
-  };
+  // const openNotification = () => {0
+  //   // dispatch(setRightDrawerIsOpen(true));
+  // };
 
   const themes = [
     "light",
@@ -73,20 +79,20 @@ export default function TopNavigation() {
   ];
 
   return (
-    <div className="navbar bg-base-100 z-10 flex h-16 justify-between shadow-md">
+    <div className="navbar z-10 flex h-16 justify-between bg-base-100 shadow-md">
       {/* Menu toggle for mobile view or small screen */}
       <div className="">
         <label
           htmlFor="left-sidebar-drawer"
-          className="btn btn-primary drawer-button lg:hidden"
+          className="btn-primary drawer-button btn lg:hidden"
         >
           <Bars3Icon className="inline-block h-5 w-5" />
         </label>
         {/* <h1 className="ml-2 text-2xl font-semibold">{pageTitle}</h1> */}
       </div>
       <div className="order-last">
-        <div title="Change Theme" className="dropdown dropdown-end ">
-          <div tabIndex={0} className="btn btn-ghost gap-1 normal-case">
+        <div title="Change Theme" className="dropdown-end dropdown ">
+          <div tabIndex={0} className="btn-ghost btn gap-1 normal-case">
             <svg
               width="20"
               height="20"
@@ -113,20 +119,20 @@ export default function TopNavigation() {
               <path d="M1799 349l242 241-1017 1017L7 590l242-241 775 775 775-775z"></path>
             </svg>
           </div>
-          <div className="dropdown-content bg-base-200 text-base-content rounded-t-box rounded-b-box scrollbar-hide top-px mt-16 h-[70vh] max-h-96 w-52 overflow-y-auto shadow-2xl">
+          <div className="scrollbar-hide dropdown-content rounded-t-box rounded-b-box top-px mt-16 h-[70vh] max-h-96 w-52 overflow-y-auto bg-base-200 text-base-content shadow-2xl">
             <div className="grid grid-cols-1 gap-3 p-3" tabIndex={0}>
               {themes.map((theme) => (
                 <div
                   data-act-class="outline"
                   className={
-                    "outline-base-content overflow-hidden rounded-lg outline-2 outline-offset-2 hover:outline"
+                    "overflow-hidden rounded-lg outline-2 outline-offset-2 outline-base-content hover:outline"
                   }
                   data-set-theme={theme}
                   key={theme}
                 >
                   <div
                     data-theme={theme}
-                    className="bg-base-100 text-base-content w-full cursor-pointer font-sans"
+                    className="w-full cursor-pointer bg-base-100 font-sans text-base-content"
                   >
                     <div className="grid grid-cols-5 grid-rows-3">
                       <div className="col-span-5 row-span-3 row-start-1 flex gap-1 px-4 py-3">
@@ -134,10 +140,10 @@ export default function TopNavigation() {
                           {theme}
                         </div>
                         <div className="flex flex-shrink-0 flex-wrap gap-1">
-                          <div className="bg-primary w-2 rounded"></div>
-                          <div className="bg-secondary w-2 rounded"></div>
-                          <div className="bg-accent w-2 rounded"></div>
-                          <div className="bg-neutral w-2 rounded"></div>
+                          <div className="w-2 rounded bg-primary"></div>
+                          <div className="w-2 rounded bg-secondary"></div>
+                          <div className="w-2 rounded bg-accent"></div>
+                          <div className="w-2 rounded bg-neutral"></div>
                         </div>
                       </div>
                     </div>
@@ -154,18 +160,18 @@ export default function TopNavigation() {
                     <MoonIcon data-set-theme="dark" data-act-class="ACTIVECLASS" className={'fill-current w-6 h-6 ' + (currentTheme === 'light' ? 'swap-on' : 'swap-off')} />
                 </label> */}
         {/* Notification icon */}
-        <button
-          className="btn btn-ghost btn-circle ml-4"
+        {/* <button
+          className="btn-ghost btn-circle btn ml-4"
           onClick={() => openNotification()}
         >
           <div className="indicator">
             <BellIcon className="h-6 w-6" />
-            {/* {noOfNotifications > 0 ? <span className="indicator-item badge badge-secondary badge-sm">{noOfNotifications}</span> : null} */}
+             {noOfNotifications > 0 ? <span className="indicator-item badge badge-secondary badge-sm">{noOfNotifications}</span> : null} 
           </div>
-        </button>
+        </button> */}
         {/* Profile icon, opening menu on click */}
-        <div className="dropdown dropdown-end ml-4">
-          <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+        <div className="dropdown-end dropdown ml-4">
+          <label tabIndex={0} className="btn-ghost btn-circle avatar btn">
             <div className="w-10 rounded-full">
               <Image
                 src="https://placeimg.com/80/80/people"
@@ -177,15 +183,17 @@ export default function TopNavigation() {
           </label>
           <ul
             tabIndex={0}
-            className="menu menu-compact dropdown-content bg-base-100 rounded-box mt-3 w-52 p-2 shadow"
+            className="dropdown-content menu rounded-box menu-compact mt-3 w-52 bg-base-100 p-2 shadow"
           >
             <li>
               <Link href="/dashboard/profile">Profile</Link>
             </li>
-            {/* <li>
-                            <a>Settings</a>
-                        </li>
-                        <div className="mt-0 mb-0 divider"></div> */}
+            {/* 
+            <li>
+              <a>Settings</a>
+            </li> 
+            */}
+            {/* <div className="divider mt-0 mb-0"></div> */}
             <li>
               <a onClick={logoutUser}>Logout</a>
             </li>
