@@ -1,3 +1,15 @@
 {
-  "hide-my-secrets.hideSecrets": false
+  "hide-my-secrets.hideSecrets": false,
+  "cSpell.words": [
+    "ACTIVECLASS",
+    "chartjs",
+    "cmyk",
+    "datetime",
+    "dracula",
+    "halloween",
+    "heroicons",
+    "lofi",
+    "synthwave",
+    "wireframe"
+  ]
 }
