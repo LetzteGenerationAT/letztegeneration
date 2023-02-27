@@ -80,7 +80,8 @@ model User {
     protestDegree        String?
     accounts             Account[]
     sessions             Session[]
-    ringerNotes          RingerNote[]
+    ringerNotes          RingerNote[] @relation(name: "user")
+    createdRingerNotes   RingerNote[] @relation(name: "ringer")
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -88,9 +89,10 @@ model User {
 
 model RingerNote {
     id       String @id @default(cuid()) @db.VarChar(30)
-    userId   String @unique
-    user     User   @relation(fields: [userId], references: [id])
+    userId   String
+    user     User   @relation(name: "user", fields: [userId], references: [id])
     ringerId String
+    ringer   User   @relation(name: "ringer", fields: [ringerId], references: [id])
     text     String
 
     createdAt DateTime @default(now())

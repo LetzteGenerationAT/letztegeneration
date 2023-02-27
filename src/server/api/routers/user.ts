@@ -9,7 +9,6 @@ export const userRouter = createTRPCRouter({
       },
     });
   }),
-
   updateProfile: protectedProcedure
     .input(
       z.object({
@@ -20,6 +19,7 @@ export const userRouter = createTRPCRouter({
         region: z.string().optional(),
         possibleSupportRoles: z.string().optional(),
         protestDegree: z.string().optional(),
+        image: z.string().optional(),
       })
     )
     .mutation(({ ctx, input }) => {
@@ -30,4 +30,7 @@ export const userRouter = createTRPCRouter({
         data: input,
       });
     }),
+  getAllUsers: protectedProcedure.query(({ ctx }) => {
+    return ctx.prisma.user.findMany();
+  }),
 });

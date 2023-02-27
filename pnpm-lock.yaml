@@ -29,6 +29,7 @@ specifiers:
   eslint: ^8.30.0
   eslint-config-next: 13.1.6
   lodash: ^4.17.21
+  moment: ^2.29.4
   next: 13.1.6
   next-auth: ^4.19.0
   nodemailer: ^6.9.1
@@ -42,6 +43,7 @@ specifiers:
   react-hook-form: ^7.43.2
   react-markdown: ^8.0.5
   superjson: 1.9.1
+  tailwind-scrollbar: ^2.1.0
   tailwindcss: ^3.2.0
   theme-change: ^2.3.0
   typescript: ^4.9.4
@@ -66,6 +68,7 @@ dependencies:
   codemirror: 6.0.1
   daisyui: 2.51.0_gbtt6ss3tbiz4yjtvdr6fbrj44
   lodash: 4.17.21
+  moment: 2.29.4
   next: 13.1.6_biqbaboplfbrettd7655fr4n2y
   next-auth: 4.19.2_phzvn2nhb6zk7o4ds4z4gvqlei
   nodemailer: 6.9.1
@@ -95,6 +98,7 @@ devDependencies:
   prettier: 2.8.4
   prettier-plugin-tailwindcss: 0.2.3_prettier@2.8.4
   prisma: 4.10.1
+  tailwind-scrollbar: 2.1.0_tailwindcss@3.2.7
   tailwindcss: 3.2.7_postcss@8.4.21
   typescript: 4.9.5
 
@@ -2687,6 +2691,10 @@ packages:
   /minimist/1.2.8:
     resolution: {integrity: sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA==}
 
+  /moment/2.29.4:
+    resolution: {integrity: sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==}
+    dev: false
+
   /mri/1.2.0:
     resolution: {integrity: sha512-tzzskb3bG8LvYGFF/mDTpq3jpI6Q9wc3LEmBaghu+DdCssd1FakN7Bc0hVNmEyGq1bq3RgfkCb3cmQLpNPOroA==}
     engines: {node: '>=4'}
@@ -3503,6 +3511,15 @@ packages:
     dependencies:
       '@pkgr/utils': 2.3.1
       tslib: 2.5.0
+    dev: true
+
+  /tailwind-scrollbar/2.1.0_tailwindcss@3.2.7:
+    resolution: {integrity: sha512-zpvY5mDs0130YzYjZKBiDaw32rygxk5RyJ4KmeHjGnwkvbjm/PszON1m4Bbt2DkMRIXlXsfNevykAESgURN4KA==}
+    engines: {node: '>=12.13.0'}
+    peerDependencies:
+      tailwindcss: 3.x
+    dependencies:
+      tailwindcss: 3.2.7_postcss@8.4.21
     dev: true
 
   /tailwindcss/3.2.7_postcss@8.4.21:

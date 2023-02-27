@@ -8,6 +8,7 @@ import LeftSidebar from "~/components/Dashboard/LeftSidebar";
 // import "react-notifications/lib/notifications.css";
 import TopNavigation from "~/components/Dashboard/TopNavigation";
 import SuspenseContent from "~/components/Dashboard/SuspenseContent";
+import Modal from "~/components/Modal";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   // const dispatch = useDispatch();
@@ -39,7 +40,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <>
       {/* Left drawer - containing page content and side bar (always open) */}
-      <div className="drawer drawer-mobile">
+      <div className="drawer-mobile drawer">
         <input
           id="left-sidebar-drawer"
           type="checkbox"
@@ -48,7 +49,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="drawer-content flex flex-col ">
           <TopNavigation />
           <main
-            className="bg-base-200 flex-1 overflow-y-auto px-6  pt-8"
+            className="flex-1 overflow-y-auto bg-base-200 px-6  pt-8"
             ref={mainContentRef}
           >
             <Suspense fallback={<SuspenseContent />}>{children}</Suspense>
@@ -61,6 +62,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       {/* <RightSidebar setIsOpen={changeRightDrawerStatus} isOpen={rightDrawerIsOpen} /> */}
       {/** Notification layout container */}
       {/* <NotificationContainer /> */}
+
+      <Modal />
     </>
   );
 }

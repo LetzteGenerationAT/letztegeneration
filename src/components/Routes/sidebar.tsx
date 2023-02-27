@@ -11,10 +11,10 @@ import Squares2X2Icon from "@heroicons/react/24/outline/Squares2X2Icon";
 // import ArrowRightOnRectangleIcon from "@heroicons/react/24/outline/ArrowRightOnRectangleIcon";
 // import UserIcon from "@heroicons/react/24/outline/UserIcon";
 // import Cog6ToothIcon from "@heroicons/react/24/outline/Cog6ToothIcon";
-import BoltIcon from "@heroicons/react/24/outline/BoltIcon";
-import ChartBarIcon from "@heroicons/react/24/outline/ChartBarIcon";
-// import InformationCircleIcon from "@heroicons/react/24/outline/InformationCircleIcon";
-import InboxArrowDownIcon from "@heroicons/react/24/outline/InboxArrowDownIcon";
+import CalendarDaysIcon from "@heroicons/react/24/outline/CalendarDaysIcon";
+import UsersIcon from "@heroicons/react/24/outline/UsersIcon";
+import BuildingLibraryIcon from "@heroicons/react/24/outline/BuildingLibraryIcon";
+import PhoneIcon from "@heroicons/react/24/outline/PhoneIcon";
 // import UsersIcon from "@heroicons/react/24/outline/UsersIcon";
 // import KeyIcon from "@heroicons/react/24/outline/KeyIcon";
 // import DocumentDuplicateIcon from "@heroicons/react/24/outline/DocumentDuplicateIcon";
@@ -32,22 +32,27 @@ const routes = [
   {
     path: "/dashboard",
     icon: <Squares2X2Icon className={iconClasses} />,
-    name: "Dashboard",
+    name: "Home",
+  },
+  {
+    path: "/dashboard/events", // url
+    icon: <CalendarDaysIcon className={iconClasses} />, // icon component
+    name: "Events", // name that appear in Sidebar
   },
   {
     path: "/dashboard/ringer", // url
-    icon: <InboxArrowDownIcon className={iconClasses} />, // icon component
+    icon: <PhoneIcon className={iconClasses} />, // icon component
     name: "Ringer", // name that appear in Sidebar
   },
   {
-    path: "/dashboard/charts", // url
-    icon: <ChartBarIcon className={iconClasses} />, // icon component
-    name: "Charts", // name that appear in Sidebar
+    path: "/dashboard/trainer", // url
+    icon: <UsersIcon className={iconClasses} />, // icon component
+    name: "Trainer", // name that appear in Sidebar
   },
   {
-    path: "/dashboard/integration", // url
-    icon: <BoltIcon className={iconClasses} />, // icon component
-    name: "Integration", // name that appear in Sidebar
+    path: "/dashboard/wiki", // url
+    icon: <BuildingLibraryIcon className={iconClasses} />, // icon component
+    name: "Wiki", // name that appear in Sidebar
   },
 ];
 

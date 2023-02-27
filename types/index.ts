@@ -4,6 +4,14 @@ import {
   type UseFormRegister,
 } from "react-hook-form";
 
+export type Modal = {
+  isOpen: boolean;
+  bodyType: string;
+  size: string;
+  extraObject: any;
+  title: string;
+};
+
 export type User =
   | {
       isActive: string;
@@ -22,7 +30,8 @@ export type User =
   | null
   | "SIGNUP";
 
-export type ProfileData = {
+export type UserData = {
+  id: any;
   email: string;
   phoneNumber: string;
   givenName: string;
@@ -32,6 +41,7 @@ export type ProfileData = {
   protestDegree: string;
   possibleSupportRoles: string;
   supportRoles: string;
+  createdAt: string;
 };
 
 export type StepOneData = {

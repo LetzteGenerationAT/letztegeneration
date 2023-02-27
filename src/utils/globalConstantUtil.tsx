@@ -1,0 +1,11 @@
+const MODAL_BODY_TYPES = Object.freeze({
+  USER_DETAIL: "USER_DETAIL",
+  LEAD_ADD_NEW: "LEAD_ADD_NEW",
+  DEFAULT: "",
+});
+
+const RIGHT_DRAWER_TYPES = Object.freeze({
+  NOTIFICATION: "NOTIFICATION",
+});
+
+export { MODAL_BODY_TYPES, RIGHT_DRAWER_TYPES };

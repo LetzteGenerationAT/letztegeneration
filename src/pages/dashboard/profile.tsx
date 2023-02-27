@@ -57,25 +57,34 @@ const SignIn: React.FC = () => {
     mode: "onTouched",
     resolver: zodResolver(LOGIN_SCHEMA),
   });
-  const { handleSubmit } = methods;
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     const refinedData = _.pickBy(
       data,
       (value, key) => value !== "" && _.get(user?.user, key) !== value
     );
-
-    void mutateAsync(refinedData, {
-      onSuccess: (updatedUser) => {
-        console.log("updatedUser", updatedUser);
+    void mutateAsync(
+      {
+        ...refinedData,
+        image: _.sample([
+          "/images/avatars/avocado-food.svg",
+          "/images/avatars/cacti-cactus.svg",
+          "/images/avatars/coffee-cup.svg",
+          "/images/avatars/lazybones-sloth.svg",
+        ]),
       },
-    });
+      {
+        onSuccess: (updatedUser) => {
+          console.log("updatedUser", updatedUser);
+        },
+      }
+    );
   };
 
   return (
     <TitleCard title="Profil Einstellungen" topMargin="mt-2">
       <FormProvider {...methods}>
-        <form onSubmit={handleSubmit(onSubmit)} className="w-full">
+        <form onSubmit={methods.handleSubmit(onSubmit)} className="w-full">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <Input
               label="E-Mail Adresse"
@@ -131,7 +140,6 @@ const SignIn: React.FC = () => {
               placeholder="Photo & Film, Vorträge, Flyern, IT Support, ..."
               defaultValue={user?.user?.possibleSupportRoles}
             />
-
             <Textarea
               label="Wie weit bist du bereit mit deinem Protest zu gehen?"
               id="protestDegree"

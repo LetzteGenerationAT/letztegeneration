@@ -3,7 +3,7 @@ import ExclamationCircleIcon from "@heroicons/react/24/solid/ExclamationCircleIc
 import ErrorText from "~/components/Typography/ErrorText";
 
 export type TextareaProps = {
-  label: string;
+  label?: string;
   id: string;
   placeholder?: string;
   helperText?: string;
@@ -32,7 +32,7 @@ export default function Textarea({
         <span className="label-text text-base-content">{label}</span>
       </label>
       <textarea
-        className="textarea textarea-bordered"
+        className="textarea-bordered textarea"
         {...register(id, validation)}
         {...rest}
         name={id}

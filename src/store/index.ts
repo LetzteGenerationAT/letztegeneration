@@ -5,6 +5,7 @@ import {
   type StepThreeData,
   type StepTwoData,
   type User,
+  type Modal,
 } from "types";
 
 type setRegisterDataType =
@@ -52,7 +53,31 @@ const userSlice: StateCreator<UserSlice, [], [], UserSlice> = (set) => ({
   },
 });
 
-export const useBoundStore = create<RegisterSlice & UserSlice>()((...a) => ({
-  ...createRegisterSlice(...a),
-  ...userSlice(...a),
-}));
+interface ModalSlice {
+  modal: Modal;
+  setModal: (modal: Modal) => void;
+}
+
+const modalSlice: StateCreator<ModalSlice, [], [], ModalSlice> = (set) => ({
+  modal: {
+    isOpen: false,
+    bodyType: "",
+    size: "",
+    extraObject: null,
+    title: "",
+  },
+  setModal: (modal: Modal) => {
+    set((state) => ({
+      ...state,
+      modal,
+    }));
+  },
+});
+
+export const useBoundStore = create<RegisterSlice & UserSlice & ModalSlice>()(
+  (...a) => ({
+    ...createRegisterSlice(...a),
+    ...userSlice(...a),
+    ...modalSlice(...a),
+  })
+);

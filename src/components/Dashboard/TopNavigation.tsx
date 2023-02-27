@@ -10,10 +10,13 @@ import Bars3Icon from "@heroicons/react/24/solid/Bars3Icon";
 // import SunIcon from "@heroicons/react/24/outline/SunIcon";
 import Link from "next/link";
 import { useBoundStore } from "~/store";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 export default function TopNavigation() {
+  const { data: user } = useSession({
+    required: true,
+  });
   const router = useRouter();
   const setUserData = useBoundStore((state) => state.setUserData);
   // const dispatch = useDispatch();
@@ -174,7 +177,7 @@ export default function TopNavigation() {
           <label tabIndex={0} className="btn-ghost btn-circle avatar btn">
             <div className="w-10 rounded-full">
               <Image
-                src="https://placeimg.com/80/80/people"
+                src={user?.user.image ?? "https://placeimg.com/80/80/people"}
                 alt="profile"
                 width={40}
                 height={40}
