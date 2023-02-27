@@ -14,6 +14,7 @@ specifiers:
   '@trpc/react-query': ^10.9.0
   '@trpc/server': ^10.9.0
   '@types/eslint': ^8.21.1
+  '@types/lodash': ^4.14.191
   '@types/node': ^18.11.18
   '@types/prettier': ^2.7.2
   '@types/react': ^18.0.26
@@ -27,6 +28,7 @@ specifiers:
   daisyui: ^2.51.0
   eslint: ^8.30.0
   eslint-config-next: 13.1.6
+  lodash: ^4.17.21
   next: 13.1.6
   next-auth: ^4.19.0
   nodemailer: ^6.9.1
@@ -34,7 +36,6 @@ specifiers:
   prettier: ^2.8.1
   prettier-plugin-tailwindcss: ^0.2.1
   prisma: ^4.9.0
-  radash: ^10.7.0
   react: 18.2.0
   react-chartjs-2: ^5.2.0
   react-dom: 18.2.0
@@ -64,10 +65,10 @@ dependencies:
   chart.js: 4.2.1
   codemirror: 6.0.1
   daisyui: 2.51.0_gbtt6ss3tbiz4yjtvdr6fbrj44
+  lodash: 4.17.21
   next: 13.1.6_biqbaboplfbrettd7655fr4n2y
   next-auth: 4.19.2_phzvn2nhb6zk7o4ds4z4gvqlei
   nodemailer: 6.9.1
-  radash: 10.7.0
   react: 18.2.0
   react-chartjs-2: 5.2.0_t5yjg6ab35jnsudnh2qdighszm
   react-dom: 18.2.0_react@18.2.0
@@ -80,6 +81,7 @@ dependencies:
 
 devDependencies:
   '@types/eslint': 8.21.1
+  '@types/lodash': 4.14.191
   '@types/node': 18.14.1
   '@types/prettier': 2.7.2
   '@types/react': 18.0.28
@@ -782,6 +784,10 @@ packages:
 
   /@types/json5/0.0.29:
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
+    dev: true
+
+  /@types/lodash/4.14.191:
+    resolution: {integrity: sha512-BdZ5BCCvho3EIXw6wUCXHe7rS53AIDPLE+JzwgT+OsJk53oBfbSmZZ7CX4VaRoN78N+TJpFi9QPlfIVNmJYWxQ==}
     dev: true
 
   /@types/mdast/3.0.10:
@@ -2423,6 +2429,10 @@ packages:
     resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
     dev: true
 
+  /lodash/4.17.21:
+    resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
+    dev: false
+
   /loose-envify/1.4.0:
     resolution: {integrity: sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==}
     hasBin: true
@@ -3147,11 +3157,6 @@ packages:
   /quick-lru/5.1.1:
     resolution: {integrity: sha512-WuyALRjWPDGtt/wzJiadO5AXY+8hZ80hVpe6MyivgraREW751X3SbhRvG3eLKOYN+8VEvqLcf3wdnt44Z4S4SA==}
     engines: {node: '>=10'}
-
-  /radash/10.7.0:
-    resolution: {integrity: sha512-dz5NUcGnvn080kKJnyPtqVnP4MWoiwp5qQhEQFK/qMJxCjffQd8tMR4cybxy6y5hupYa5UkSlJRSRY2F7GPBxQ==}
-    engines: {node: '>=14.18.0'}
-    dev: false
 
   /react-chartjs-2/5.2.0_t5yjg6ab35jnsudnh2qdighszm:
     resolution: {integrity: sha512-98iN5aguJyVSxp5U3CblRLH67J8gkfyGNbiK3c+l1QI/G4irHMPQw44aEPmjVag+YKTyQ260NcF82GTQ3bdscA==}
