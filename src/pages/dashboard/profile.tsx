@@ -15,12 +15,11 @@ import Layout from "~/components/Dashboard/Layout";
 import TitleCard from "~/components/Card/TitleCard";
 import Textarea from "~/components/Input/Textarea";
 import Select from "~/components/Input/Select";
+import _ from "lodash";
 
 const PHONE_REGEX = /^\+[1-9]\d{1,14}$/gim;
 
 const Profile: NextPage = () => {
-  const hello = api.example.hello.useQuery({ text: "from tRPC" });
-
   return (
     <>
       <Head>
@@ -45,13 +44,13 @@ const SignIn: React.FC = () => {
   const { mutateAsync } = api.user.updateProfile.useMutation();
 
   const LOGIN_SCHEMA = z.object({
-    phoneNumber: z.coerce.string().min(1).max(13).regex(PHONE_REGEX),
-    givenName: z.string().min(1).max(255),
-    familyName: z.string().min(1).max(255),
-    pronouns: z.string().min(1).max(255),
-    region: z.string().min(1).max(255),
-    possibleSupportRoles: z.string().min(1).max(255),
-    protestDegree: z.string().min(1).max(255),
+    phoneNumber: z.coerce.string().max(13),
+    givenName: z.string().max(255),
+    familyName: z.string().max(255),
+    pronouns: z.string().max(255),
+    region: z.string().max(255),
+    possibleSupportRoles: z.string().max(255),
+    protestDegree: z.string().max(255),
   });
 
   const methods = useForm({
@@ -61,7 +60,12 @@ const SignIn: React.FC = () => {
   const { handleSubmit } = methods;
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    void mutateAsync(data, {
+    const refinedData = _.pickBy(
+      data,
+      (value, key) => value !== "" && _.get(user?.user, key) !== value
+    );
+
+    void mutateAsync(refinedData, {
       onSuccess: (updatedUser) => {
         console.log("updatedUser", updatedUser);
       },
@@ -82,22 +86,23 @@ const SignIn: React.FC = () => {
             <Input
               label="Telefonnummer"
               id="phoneNumber"
-              defaultValue={user?.user?.phoneNumber ?? ""}
+              defaultValue={user?.user?.phoneNumber}
             />
             <Input
               label="Vorname"
               id="givenName"
-              defaultValue={user?.user?.givenName ?? ""}
+              defaultValue={user?.user?.givenName}
             />
             <Input
               label="Nachname"
               id="familyName"
-              defaultValue={user?.user?.familyName ?? ""}
+              defaultValue={user?.user?.familyName}
             />
             <Input
               label="Pronomen"
               id="pronouns"
               placeholder="sie/ihr, er/ihm, they/them, ..."
+              defaultValue={user?.user?.pronouns}
             />
             <Select
               label="Region"
@@ -121,17 +126,17 @@ const SignIn: React.FC = () => {
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <Textarea
-              label="Könntest du dir vorstellen eine Support-Rolle zu übernehmen?"
+              label="Welche Support-Rollen könntest du übernehmen?"
               id="possibleSupportRoles"
               placeholder="Photo & Film, Vorträge, Flyern, IT Support, ..."
-              defaultValue={user?.user?.possibleSupportRoles ?? ""}
+              defaultValue={user?.user?.possibleSupportRoles}
             />
 
             <Textarea
               label="Wie weit bist du bereit mit deinem Protest zu gehen?"
               id="protestDegree"
               placeholder="benötige weitere Informationen, einmalige Festnahme, mehrere Festnahmen, ..."
-              defaultValue={user?.user?.protestDegree ?? ""}
+              defaultValue={user?.user?.protestDegree}
             />
           </div>
           <div className="divider"></div>
@@ -141,11 +146,13 @@ const SignIn: React.FC = () => {
               label="Zugewiesene Support-Rolle(n)"
               id="supportRoles"
               disabled
+              // defaultValue={user?.user?.supportRoles}
             />
             <Input
               label="Zugewiesene Bezugsgruppe"
               id="affinityGroup"
               disabled
+              // defaultValue={user?.user?.affinityGroup}
             />
           </div>
           <div className="mt-16">

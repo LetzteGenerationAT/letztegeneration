@@ -38,6 +38,7 @@ declare module "next-auth" {
     possibleSupportRoles: string;
     role: string;
     protestDegree: string;
+    pronouns: string;
     // ...other properties
     // role: UserRole;
   }
@@ -63,13 +64,14 @@ export const authOptions: NextAuthOptions = {
         session.user.possibleSupportRoles = user.possibleSupportRoles;
         session.user.role = user.role;
         session.user.protestDegree = user.protestDegree;
+        session.user.pronouns = user.pronouns;
         // session.user.role = user.role; <-- put other properties on the session here
       }
       return session;
     },
   },
   pages: {
-    signOut: "/auth/signout",
+    signOut: "/",
     verifyRequest: "/auth/verify-request",
     newUser: "/profile",
   },

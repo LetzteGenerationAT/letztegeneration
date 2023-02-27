@@ -13,13 +13,13 @@ export const userRouter = createTRPCRouter({
   updateProfile: protectedProcedure
     .input(
       z.object({
-        phoneNumber: z.coerce.string(),
-        givenName: z.string(),
-        familyName: z.string(),
-        pronouns: z.string(),
-        region: z.string(),
-        possibleSupportRoles: z.string(),
-        protestDegree: z.string(),
+        phoneNumber: z.coerce.string().optional(),
+        givenName: z.string().optional(),
+        familyName: z.string().optional(),
+        pronouns: z.string().optional(),
+        region: z.string().optional(),
+        possibleSupportRoles: z.string().optional(),
+        protestDegree: z.string().optional(),
       })
     )
     .mutation(({ ctx, input }) => {
