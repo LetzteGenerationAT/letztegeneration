@@ -21,7 +21,7 @@ const config = {
     defaultLocale: "de",
   },
   images: {
-    domains: ["placeimg.com"],
+    domains: ["placeimg.com", "cloudflare-ipfs.com"],
   },
 };
 export default config;
