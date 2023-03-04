@@ -139,7 +139,7 @@ export default function Ringer() {
   return (
     <Layout>
       <TitleCard
-        title="Current Leads"
+        title="Ringer Pipeline"
         topMargin="mt-2"
         TopSideButtons={<TopSideButtons setFilter={setFilter} />}
       >
