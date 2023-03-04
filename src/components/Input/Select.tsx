@@ -7,7 +7,7 @@ import { type RegisterOptions, useFormContext } from "react-hook-form";
 import ErrorText from "../Typography/ErrorText";
 
 export type SelectProps = {
-  label: string;
+  label?: string;
   id: string;
   placeholder?: string;
   helperText?: string;
@@ -47,21 +47,23 @@ export default function Select({
 
   return (
     <div className="inline-block w-full">
-      <label className="label" htmlFor={id}>
-        <div className="label-text">
-          {label}
-          {/* {labelDescription && (
+      {label && (
+        <label className="label" htmlFor={id}>
+          <div className="label-text">
+            {label}
+            {/* {labelDescription && (
             <div className="tooltip tooltip-right" data-tip={labelDescription}>
               <InformationCircleIcon className="w-4 h-4" />
             </div>
           )} */}
-        </div>
-      </label>
+          </div>
+        </label>
+      )}
       <div className="relative">
         <select
           className={`${
             readOnly ? "bg-gray-100" : ""
-          }  select select-bordered w-full`}
+          }  select-bordered select w-full`}
           {...register(id, validation)}
           defaultValue=""
           {...rest}
@@ -78,12 +80,14 @@ export default function Select({
           {children}
         </select>
         {errors[id] && (
-          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-            <ExclamationCircleIcon className="text-xl text-red-500" />
-          </div>
+          <>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+              <ExclamationCircleIcon className="text-xl text-red-500" />
+            </div>
+            <ErrorText helperText={helperText} errors={errors} id={id} />
+          </>
         )}
       </div>
-      <ErrorText helperText={helperText} errors={errors} id={id} />
     </div>
   );
 }

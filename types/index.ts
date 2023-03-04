@@ -4,6 +4,8 @@ import {
   type UseFormRegister,
 } from "react-hook-form";
 
+import { type UserStatus } from "@prisma/client";
+
 export type Modal = {
   isOpen: boolean;
   bodyType: string;
@@ -33,6 +35,7 @@ export type User =
 export type UserData = {
   id: any;
   email: string;
+  status: UserStatus;
   phoneNumber: string;
   givenName: string;
   familyName: string;

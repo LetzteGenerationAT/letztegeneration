@@ -3,13 +3,12 @@ import { useBoundStore } from "~/store";
 import { MODAL_BODY_TYPES } from "~/utils/globalConstantUtil";
 // import { useSelector, useDispatch } from 'react-redux'
 // import { closeModal } from '../features/common/modalSlice'
-import CreateRingerNote from "~/components/Dashboard/Ringer/CreateRingerNote";
+import CreateRingerNote from "~/components/Dashboard/Ringer/Note";
+import Modal from "~/components/Dashboard/Ringer/Modal";
 
 function ModalLayout() {
   const modal = useBoundStore((state) => state.modal);
   const setModal = useBoundStore((state) => state.setModal);
-
-  console.log(modal);
 
   const close = () => {
     setModal({
@@ -42,7 +41,7 @@ function ModalLayout() {
           {
             {
               [MODAL_BODY_TYPES.LEAD_ADD_NEW]: (
-                <CreateRingerNote
+                <Modal
                   closeModal={close}
                   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                   extraObject={modal.extraObject}

@@ -15,17 +15,18 @@ import CalendarDaysIcon from "@heroicons/react/24/outline/CalendarDaysIcon";
 import UsersIcon from "@heroicons/react/24/outline/UsersIcon";
 import BuildingLibraryIcon from "@heroicons/react/24/outline/BuildingLibraryIcon";
 import PhoneIcon from "@heroicons/react/24/outline/PhoneIcon";
-// import UsersIcon from "@heroicons/react/24/outline/UsersIcon";
-// import KeyIcon from "@heroicons/react/24/outline/KeyIcon";
+import HomeIcon from "@heroicons/react/24/outline/HomeIcon";
+import TableCellsIcon from "@heroicons/react/24/outline/TableCellsIcon";
 // import DocumentDuplicateIcon from "@heroicons/react/24/outline/DocumentDuplicateIcon";
 
 const iconClasses = `h-6 w-6`;
-// const submenuIconClasses = `h-5 w-5`;
+const submenuIconClasses = `h-5 w-5`;
 
 type Route = {
   path: string;
   icon: React.ReactNode;
   name: string;
+  submenu?: Route[] | undefined;
 };
 
 const routes = [
@@ -40,9 +41,21 @@ const routes = [
     name: "Events", // name that appear in Sidebar
   },
   {
-    path: "/dashboard/ringer", // url
+    path: "", // url
     icon: <PhoneIcon className={iconClasses} />, // icon component
     name: "Ringer", // name that appear in Sidebar
+    submenu: [
+      {
+        path: "/dashboard/ringer",
+        icon: <HomeIcon className={submenuIconClasses} />,
+        name: "Home",
+      },
+      {
+        path: "/dashboard/ringer/pipeline",
+        icon: <TableCellsIcon className={submenuIconClasses} />,
+        name: "Pipeline",
+      },
+    ],
   },
   {
     path: "/dashboard/trainer", // url

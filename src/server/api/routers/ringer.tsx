@@ -14,8 +14,12 @@ export const ringerRouter = createTRPCRouter({
       return ctx.prisma.ringerNote.create({
         data: {
           text: input.text,
-          ringerId: input.ringerId,
           user: {
+            connect: {
+              id: input.userId,
+            },
+          },
+          ringer: {
             connect: {
               id: input.userId,
             },
@@ -41,6 +45,26 @@ export const ringerRouter = createTRPCRouter({
               givenName: true,
               familyName: true,
               image: true,
+            },
+          },
+        },
+      });
+    }),
+  deleteOwnRingerNote: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      return ctx.prisma.ringerNote.delete({
+        where: {
+          id: input.id,
+        },
+        include: {
+          ringer: {
+            select: {
+              id: true,
             },
           },
         },
