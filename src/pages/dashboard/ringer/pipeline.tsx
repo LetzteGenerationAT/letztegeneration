@@ -49,11 +49,6 @@ const TopSideButtons = ({
 }) => {
   const methods = useForm({
     mode: "onSubmit",
-    // resolver: zodResolver(
-    //   z.object({
-    //     search: z.string().min(1).max(255),
-    //   })
-    // ),
   });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
@@ -61,12 +56,6 @@ const TopSideButtons = ({
       attribute: String(data.attribute),
       value: String(data.value),
     });
-    console.log("data", data);
-    // const refinedData = _.pickBy(
-    //   data,
-    //   (value, key) => value !== "" && _.get(user?.user, key) !== value
-    // );
-    // void mutateAsync(
     //   {
     //     ...refinedData,
     //     image: _.sample([
@@ -96,6 +85,7 @@ const TopSideButtons = ({
             <option value="givenName">Vorname</option>
             <option value="familyName">Nachname</option>
             <option value="region">Region</option>
+            <option value="region">Region</option>
           </Select>
           <InputWithButton id="value" buttonType="submit" />
         </form>
@@ -123,19 +113,6 @@ export default function Ringer() {
     }
   );
 
-  const SortByButton = ({ sortKey }: { sortKey: string }) => {
-    return (
-      <button
-        className="btn-ghost btn-square btn-xs btn"
-        onClick={() => {
-          setUsers(_.orderBy(users, [sortKey], ["asc"]));
-        }}
-      >
-        <ChevronDownIcon className="w-5" />
-      </button>
-    );
-  };
-
   return (
     <Layout>
       <TitleCard
@@ -148,21 +125,13 @@ export default function Ringer() {
           <table className="table h-full w-full overflow-hidden">
             <thead>
               <tr>
-                <th>
-                  Name <SortByButton sortKey="familyName" />
-                </th>
+                <th>Name</th>
                 <th>Pronomen</th>
-                <th>
-                  Registriert am <SortByButton sortKey="createdAt" />
-                </th>
-                <th>
-                  Status <SortByButton sortKey="status" />
-                </th>
-                <th>
-                  Region <SortByButton sortKey="region" />
-                </th>
+                <th>Registriert am</th>
+                <th>Status</th>
+                <th>Region</th>
                 <th>Telefon</th>
-                <th></th>
+                <th>Users: {users.length}</th>
               </tr>
             </thead>
             <tbody>
