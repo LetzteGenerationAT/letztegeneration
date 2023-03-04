@@ -1,4 +1,5 @@
 import { type UserRole, UserStatus } from "@prisma/client";
+import _ from "lodash";
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
@@ -42,7 +43,23 @@ export const userRouter = createTRPCRouter({
       })
     )
     .query(({ ctx, input }) => {
-      if (input.value === "") {
+      if (
+        _.isUndefined(input.value) ||
+        _.isEmpty(input.value) ||
+        _.isUndefined(input.attribute) ||
+        !_.includes(
+          [
+            "email",
+            "givenName",
+            "familyName",
+            "pronouns",
+            "region",
+            "possibleSupportRoles",
+            "protestDegree",
+          ],
+          input.attribute
+        )
+      ) {
         return ctx.prisma.user.findMany({
           where: {
             status: {
@@ -57,26 +74,10 @@ export const userRouter = createTRPCRouter({
       }
       return ctx.prisma.user.findMany({
         where: {
-          OR: [
-            {
-              givenName: {
-                contains: input.value,
-                mode: "insensitive",
-              },
-            },
-            {
-              familyName: {
-                contains: input.value,
-                mode: "insensitive",
-              },
-            },
-            {
-              region: {
-                contains: input.value,
-                mode: "insensitive",
-              },
-            },
-          ],
+          [input.attribute]: {
+            contains: input.value,
+            mode: "insensitive",
+          },
         },
       });
     }),
