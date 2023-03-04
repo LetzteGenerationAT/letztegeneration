@@ -63,8 +63,7 @@ export default function Modal({
       <div className="divider" />
       <CreateNoteForm
         closeModal={closeModal}
-        ringerId={extraObject.ringerId}
-        userId={extraObject.userId}
+        ringer={extraObject}
         setNotes={setNotes}
       />
       <div className="divider" />

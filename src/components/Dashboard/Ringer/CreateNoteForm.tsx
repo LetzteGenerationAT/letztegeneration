@@ -1,30 +1,28 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { type RingerNote } from "@prisma/client";
+import { type SetStateAction } from "react";
 import {
   type FieldValues,
   FormProvider,
   type SubmitHandler,
   useForm,
 } from "react-hook-form";
+import { type UserData } from "types";
 import { z } from "zod";
 import Textarea from "~/components/Input/Textarea";
 import { api } from "~/utils/api";
 
 export default function CreateNoteForm({
   closeModal,
-  ringerId,
-  userId,
+  ringer,
   setNotes,
 }: {
   closeModal: () => void;
-  ringerId: string;
-  userId: string;
-  setNotes: (notes: RingerNote[]) => void;
+  ringer: UserData & RingerNote;
+  setNotes: (value: SetStateAction<RingerNote[]>) => void;
 }) {
-  const { mutateAsync } = api.ringer.createRingerNote.useMutation({
-    onSuccess: (data) => {
-      setNotes((prevNotes) => [...prevNotes, data]);
-    },
-  });
+  console.log(ringer);
+  const { mutateAsync } = api.ringer.createRingerNote.useMutation();
 
   const methods = useForm({
     mode: "onTouched",
@@ -38,13 +36,17 @@ export default function CreateNoteForm({
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     const refinedData = {
       text: data.text as string,
-      ringerId,
-      userId,
+      ringerId: ringer.ringerId,
+      userId: ringer.userId,
     };
     console.log("refinedData", refinedData);
     void mutateAsync(refinedData, {
       onSuccess: (createdRingerNote) => {
-        console.log("createdRingerNote", createdRingerNote);
+        console.log(data);
+        setNotes((prev: RingerNote[]) => [
+          { ...createdRingerNote, ringer: ringer },
+          ...prev,
+        ]);
       },
     });
   };

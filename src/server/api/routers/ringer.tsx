@@ -48,6 +48,9 @@ export const ringerRouter = createTRPCRouter({
             },
           },
         },
+        orderBy: {
+          createdAt: "desc",
+        },
       });
     }),
   deleteOwnRingerNote: protectedProcedure
