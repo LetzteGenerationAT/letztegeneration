@@ -1,25 +1,27 @@
-import { api } from "~/utils/api";
 import { type RingerNote } from "@prisma/client";
 import { type UserData } from "types";
 import Note from "~/components/Dashboard/Ringer/Note";
 import CreateNoteForm from "~/components/Dashboard/Ringer/CreateNoteForm";
 import { useState } from "react";
+import _ from "lodash";
+import { api } from "~/utils/api";
 
 export default function Modal({
   closeModal,
   extraObject,
 }: {
   closeModal: () => void;
-  extraObject: UserData & RingerNote;
+  extraObject: UserData;
 }) {
   const [notes, setNotes] = useState<RingerNote[]>([]);
 
   api.ringer.getRingerNotesForUser.useQuery(
     {
-      userId: extraObject.userId,
+      userId: extraObject?.id,
     },
     {
       onSuccess: (data) => {
+        console.log(data);
         setNotes(data);
       },
     }
@@ -63,20 +65,19 @@ export default function Modal({
       <div className="divider" />
       <CreateNoteForm
         closeModal={closeModal}
-        ringer={extraObject}
+        extraObject={extraObject}
         setNotes={setNotes}
       />
       <div className="divider" />
-      {notes?.map(
-        (ringerNote) =>
-          ringerNote.text && (
-            <Note
-              key={ringerNote.id}
-              ringerNote={ringerNote}
-              ownUserId={extraObject.ringerId}
-            />
-          )
-      )}
+      {!_.isEmpty(notes) &&
+        notes.map((ringerNote) => (
+          <Note
+            key={ringerNote.id}
+            ringerNote={ringerNote}
+            isOwner={_.isEqual(ringerNote.userId, extraObject.id)}
+            setNotes={setNotes}
+          />
+        ))}
     </>
   );
 }

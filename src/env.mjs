@@ -20,8 +20,8 @@ const server = z.object({
   ),
   // Add `.min(1) on ID and SECRET if you want to make sure they're not empty
   // Next Auth Discord Provider
-  DISCORD_CLIENT_ID: z.string(),
-  DISCORD_CLIENT_SECRET: z.string(),
+  // DISCORD_CLIENT_ID: z.string(),
+  // DISCORD_CLIENT_SECRET: z.string(),
   // Next Auth Cognito Provider
   // COGNITO_CLIENT_ID: z.string(),
   // COGNITO_CLIENT_SECRET: z.string(),
@@ -54,8 +54,8 @@ const processEnv = {
   NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
   NEXTAUTH_URL: process.env.NEXTAUTH_URL,
   // Next Auth Discord Provider
-  DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
-  DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
+  // DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
+  // DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
   // Next Auth Cognito Provider
   // COGNITO_CLIENT_ID: process.env.COGNITO_CLIENT_ID,
   // COGNITO_CLIENT_SECRET: process.env.COGNITO_CLIENT_SECRET,

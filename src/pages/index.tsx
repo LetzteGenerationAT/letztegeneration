@@ -1,16 +1,14 @@
 import { type NextPage } from "next";
 
 import Head from "next/head";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 
 import { FormProvider, type SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
 import { api } from "~/utils/api";
-import LandingIntro from "~/components/Authentication/LandingIntro";
 import Input from "~/components/Input/Input";
 import { type LoginData } from "types";
 import FormHeader from "~/components/Authentication/FormHeader";
@@ -19,8 +17,6 @@ import Layout from "~/components/Authentication/Layout";
 const Home: NextPage = () => {
   const { status } = useSession();
   const router = useRouter();
-
-  const hello = api.example.hello.useQuery({ text: "from tRPC" });
 
   if (status === "authenticated") {
     router.push("/dashboard");

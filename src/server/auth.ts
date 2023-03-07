@@ -4,11 +4,8 @@ import {
   type NextAuthOptions,
   type DefaultSession,
 } from "next-auth";
-import DiscordProvider from "next-auth/providers/discord";
-import CognitoProvider from "next-auth/providers/cognito";
 import EmailProvider from "next-auth/providers/email";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { env } from "~/env.mjs";
 import { prisma } from "~/server/db";
 
 /**

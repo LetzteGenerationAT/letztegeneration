@@ -21,7 +21,7 @@ export const ringerRouter = createTRPCRouter({
           },
           ringer: {
             connect: {
-              id: input.userId,
+              id: input.ringerId,
             },
           },
         },

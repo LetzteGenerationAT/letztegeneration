@@ -29,6 +29,12 @@ type Route = {
   submenu?: Route[] | undefined;
 };
 
+type SubMenuRoute = {
+  path: string;
+  icon: React.ReactNode;
+  name: string;
+};
+
 const routes = [
   {
     path: "/dashboard",
@@ -69,5 +75,5 @@ const routes = [
   },
 ];
 
-export type { Route };
+export type { Route, SubMenuRoute };
 export default routes;

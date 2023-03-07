@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { type RingerNote } from "@prisma/client";
+import { type User, type RingerNote } from "@prisma/client";
+import { useSession } from "next-auth/react";
 import { type SetStateAction } from "react";
 import {
   type FieldValues,
@@ -14,14 +15,14 @@ import { api } from "~/utils/api";
 
 export default function CreateNoteForm({
   closeModal,
-  ringer,
+  extraObject,
   setNotes,
 }: {
   closeModal: () => void;
-  ringer: UserData & RingerNote;
+  extraObject: UserData;
   setNotes: (value: SetStateAction<RingerNote[]>) => void;
 }) {
-  console.log(ringer);
+  const { data: sessionData } = useSession();
   const { mutateAsync } = api.ringer.createRingerNote.useMutation();
 
   const methods = useForm({
@@ -34,17 +35,21 @@ export default function CreateNoteForm({
   });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    if (!sessionData?.user?.id || !extraObject?.id) return;
     const refinedData = {
       text: data.text as string,
-      ringerId: ringer.ringerId,
-      userId: ringer.userId,
+      ringerId: sessionData?.user?.id,
+      userId: extraObject?.id,
     };
     console.log("refinedData", refinedData);
     void mutateAsync(refinedData, {
       onSuccess: (createdRingerNote) => {
         console.log(data);
         setNotes((prev: RingerNote[]) => [
-          { ...createdRingerNote, ringer: ringer },
+          {
+            ...createdRingerNote,
+            ringer: sessionData?.user as User,
+          },
           ...prev,
         ]);
       },

@@ -8,7 +8,7 @@ export default function SidebarSubmenu({
   name,
   icon,
 }: {
-  submenu: Route[];
+  submenu?: Route[] | undefined;
   name: string;
   icon: React.ReactNode;
 }) {
@@ -19,7 +19,7 @@ export default function SidebarSubmenu({
   /** Open Submenu list if path found in routes, this is for directly loading submenu routes  first time */
   useEffect(() => {
     if (
-      submenu.filter((m) => {
+      submenu?.filter((m) => {
         return m.path === pathname;
       })[0]
     )
@@ -48,7 +48,7 @@ export default function SidebarSubmenu({
       {/** Submenu list */}
       <div className={` w-full ` + (isExpanded ? "" : "hidden")}>
         <ul className={`menu menu-compact`}>
-          {submenu.map((m, k) => {
+          {submenu?.map((m, k) => {
             return (
               <li key={k}>
                 <Link href={m.path}>

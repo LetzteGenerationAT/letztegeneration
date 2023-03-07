@@ -1,14 +1,21 @@
 import { api } from "~/utils/api";
-import { type RingerNote } from "@prisma/client";
 import moment from "moment";
 import Image from "next/image";
+import { type User, type RingerNote } from "@prisma/client";
+import { type SetStateAction } from "react";
 
 function Header({
-  ringerNote,
-  ownUserId,
+  id,
+  ringer,
+  createdAt,
+  isOwner,
+  setNotes,
 }: {
-  ringerNote: RingerNote;
-  ownUserId: string;
+  id: string;
+  ringer?: User;
+  createdAt: Date;
+  isOwner: boolean;
+  setNotes: (value: SetStateAction<RingerNote[]>) => void;
 }) {
   const { mutateAsync } = api.ringer.deleteOwnRingerNote.useMutation();
 
@@ -18,6 +25,9 @@ function Header({
       {
         onSuccess: (createdRingerNote) => {
           console.log("createdRingerNote", createdRingerNote);
+          setNotes((prev: RingerNote[]) =>
+            prev.filter((note) => note.id !== createdRingerNote.id)
+          );
         },
       }
     );
@@ -29,7 +39,7 @@ function Header({
         <div>
           <Image
             className="inline-block h-10 w-10 rounded-full"
-            src={ringerNote?.ringer?.image || "/images/avatar-default.svg"}
+            src={ringer?.image ?? "/images/avatar-default.svg"}
             alt="Image of the ringer"
             height={40}
             width={40}
@@ -37,19 +47,19 @@ function Header({
         </div>
         <div className="ml-3">
           <p className="text-base font-medium leading-6 text-white">
-            {ringerNote?.ringer?.givenName} {ringerNote?.ringer?.familyName}
+            {ringer?.givenName} {ringer?.familyName}
             <span className="text-sm font-medium leading-5 text-gray-400 transition duration-150 ease-in-out group-hover:text-gray-300">
               {" "}
-              · {moment(ringerNote.createdAt).fromNow()}
+              · {moment(createdAt).fromNow()}
             </span>
           </p>
         </div>
       </div>
-      {ringerNote.ringerId === ownUserId && (
+      {isOwner && (
         <button
           className="btn-ghost btn-sm btn"
           onClick={() => {
-            void deleteRingerNote(ringerNote.id);
+            void deleteRingerNote(id);
           }}
         >
           ✕
@@ -71,14 +81,22 @@ function Body({ text }: { text: string }) {
 
 export default function RingerNote({
   ringerNote,
-  ownUserId,
+  isOwner,
+  setNotes,
 }: {
-  ringerNote: RingerNote;
-  ownUserId: string;
+  ringerNote: RingerNote & { ringer?: User };
+  isOwner: boolean;
+  setNotes: (value: SetStateAction<RingerNote[]>) => void;
 }) {
   return (
     <div>
-      <Header ringerNote={ringerNote} ownUserId={ownUserId} />
+      <Header
+        id={ringerNote.id}
+        ringer={ringerNote.ringer}
+        createdAt={ringerNote.createdAt}
+        isOwner={isOwner}
+        setNotes={setNotes}
+      />
       <Body text={ringerNote.text} />
       <div className="divider" />
     </div>

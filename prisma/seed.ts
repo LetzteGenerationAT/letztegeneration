@@ -1,12 +1,15 @@
 /* eslint-disable no-console */
-import { PrismaClient, UserRole, UserStatus } from "@prisma/client";
+import {
+  PrismaClient,
+  UserRole,
+  UserStatus,
+  type Prisma,
+} from "@prisma/client";
 import { faker } from "@faker-js/faker/locale/de";
-
-import type { Prisma } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-const NUMBER = 5000;
+const NUMBER = 500;
 
 const PRONOUNS = [
   "she/her",
@@ -74,6 +77,42 @@ const seedUsers = async (n: number = NUMBER) => {
     });
   const { count } = await prisma.user.createMany({ data: users });
   console.log("Seeded", count, "users");
+};
+
+const seedEvents = async (n: number = NUMBER) => {
+  const users = await prisma.user.findMany();
+  const events: Prisma.EventCreateManyInput[] = Array(n)
+    .fill(null)
+    .map(() => {
+      const attendees = faker.helpers.arrayElements(users, 4);
+      return {
+        name: faker.lorem.words(),
+        description: faker.lorem.paragraphs(),
+        location: faker.address.streetAddress(true),
+        date: faker.date.future(),
+        createdById: faker.helpers.arrayElement(users).id,
+        // attendeeId: attendees.map((attendee) => attendee.id),
+        createdAt: faker.date.recent(14),
+      };
+    });
+  const { count } = await prisma.event.createMany({ data: events });
+  console.log("Seeded", count, "events");
+};
+
+const seedRingerNotes = async (n: number = NUMBER) => {
+  const users = await prisma.user.findMany();
+  const ringerNotes: Prisma.RingerNoteCreateManyInput[] = Array(n)
+    .fill(null)
+    .map(() => {
+      return {
+        text: faker.lorem.paragraphs(),
+        userId: faker.helpers.arrayElement(users).id,
+        ringerId: faker.helpers.arrayElement(users).id,
+        createdAt: faker.date.recent(14),
+      };
+    });
+  const { count } = await prisma.ringerNote.createMany({ data: ringerNotes });
+  console.log("Seeded", count, "RingerNotes");
 };
 
 // const seedRequests = async (n: number = NUMBER) => {
@@ -257,17 +296,20 @@ const seedUsers = async (n: number = NUMBER) => {
 // };
 
 const cleanup = async () => {
+  await prisma.event.deleteMany();
+  await prisma.ringerNote.deleteMany();
   await prisma.user.deleteMany({
     where: {
       emailVerified: null,
     },
   });
-  // await prisma.dataDashboardValue.deleteMany();
 };
 
 async function main() {
   await cleanup();
-  await seedUsers();
+  await seedUsers(); // has to run first
+  await seedRingerNotes();
+  await seedEvents();
   // await seedRequests();
   // await seedApplications(NUMBER / 10);
   // await seedDataDashboard();

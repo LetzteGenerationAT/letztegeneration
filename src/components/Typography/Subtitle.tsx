@@ -5,7 +5,9 @@ function Subtitle({
   className?: string;
   children: React.ReactNode;
 }) {
-  return <div className={`text-xl font-semibold ${className}`}>{children}</div>;
+  return (
+    <div className={`text-xl font-semibold ${className ?? ""}`}>{children}</div>
+  );
 }
 
 export default Subtitle;

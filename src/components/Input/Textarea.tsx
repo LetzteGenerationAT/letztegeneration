@@ -31,16 +31,20 @@ export default function Textarea({
       <label className="label" htmlFor={id}>
         <span className="label-text text-base-content">{label}</span>
       </label>
-      <textarea
-        className="textarea-bordered textarea"
-        {...register(id, validation)}
-        {...rest}
-        name={id}
-        id={id}
-        readOnly={readOnly}
-        placeholder={placeholder}
-        aria-describedby={id}
-      />
+      {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        <textarea
+          className="textarea-bordered textarea"
+          {...register(id, validation)}
+          {...rest}
+          name={id}
+          id={id}
+          readOnly={readOnly}
+          placeholder={placeholder}
+          aria-describedby={id}
+        />
+      }
       {errors[id] && (
         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
           <ExclamationCircleIcon className="text-xl text-red-500" />

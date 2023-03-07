@@ -1,9 +1,5 @@
-import { useEffect } from "react";
 import { useBoundStore } from "~/store";
 import { MODAL_BODY_TYPES } from "~/utils/globalConstantUtil";
-// import { useSelector, useDispatch } from 'react-redux'
-// import { closeModal } from '../features/common/modalSlice'
-import CreateRingerNote from "~/components/Dashboard/Ringer/Note";
 import Modal from "~/components/Dashboard/Ringer/Modal";
 
 function ModalLayout() {

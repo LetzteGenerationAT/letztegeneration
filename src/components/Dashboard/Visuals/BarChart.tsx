@@ -63,8 +63,12 @@ export default function BarChart() {
   };
 
   return (
-    <div className="h-80 card w-full p-6 mt-6 bg-base-100 shadow">
-      <Bar options={options} data={data} />
+    <div className="card mt-6 h-80 w-full bg-base-100 p-6 shadow">
+      {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        <Bar options={options} data={data} />
+      }
     </div>
   );
 }

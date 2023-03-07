@@ -4,6 +4,8 @@
 generator client {
     provider        = "prisma-client-js"
     previewFeatures = ["filteredRelationCount"]
+    binaryTargets   = ["native", "linux-musl-openssl-3.0.x"]
+    engineType      = "binary"
 }
 
 datasource db {
@@ -12,7 +14,7 @@ datasource db {
     // Further reading:
     // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
     // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
-    url      = env("DATABASE_URL")
+    url      = "postgresql://postgres:7V1LXQAAihYwpA6fxVTN@containers-us-west-24.railway.app:7793/railway"
 }
 
 model Example {
@@ -57,6 +59,7 @@ enum UserRole {
 
 enum UserStatus {
     Pending
+    Contacted
     Lectured
     Trained
     Rejected
@@ -82,9 +85,12 @@ model User {
     sessions             Session[]
     ringerNotes          RingerNote[] @relation(name: "user")
     createdRingerNotes   RingerNote[] @relation(name: "ringer")
+    events               Event[]
+    createdEvents        Event[]      @relation(name: "createdBy")
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+    eventId   String?  @db.VarChar(30)
 }
 
 model RingerNote {
@@ -94,6 +100,20 @@ model RingerNote {
     ringerId String
     ringer   User   @relation(name: "ringer", fields: [ringerId], references: [id])
     text     String
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model Event {
+    id          String   @id @default(cuid()) @db.VarChar(30)
+    name        String
+    description String?
+    date        DateTime
+    location    String?
+    attendees   User[]
+    createdById String
+    createdBy   User     @relation(name: "createdBy", fields: [createdById], references: [id])
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt

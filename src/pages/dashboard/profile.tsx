@@ -17,7 +17,7 @@ import Textarea from "~/components/Input/Textarea";
 import Select from "~/components/Input/Select";
 import _ from "lodash";
 
-const PHONE_REGEX = /^\+[1-9]\d{1,14}$/gim;
+// const PHONE_REGEX = /^\+[1-9]\d{1,14}$/gim;
 
 const Profile: NextPage = () => {
   return (

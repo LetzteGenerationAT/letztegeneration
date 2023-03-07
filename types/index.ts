@@ -4,7 +4,7 @@ import {
   type UseFormRegister,
 } from "react-hook-form";
 
-import { type UserStatus } from "@prisma/client";
+import { type RingerNote, type UserStatus } from "@prisma/client";
 
 export type Modal = {
   isOpen: boolean;
@@ -33,7 +33,7 @@ export type User =
   | "SIGNUP";
 
 export type UserData = {
-  id: any;
+  id: string;
   email: string;
   status: UserStatus;
   phoneNumber: string;
@@ -44,6 +44,7 @@ export type UserData = {
   protestDegree: string;
   possibleSupportRoles: string;
   supportRoles: string;
+  ringerNotes: RingerNote[];
   createdAt: string;
 };
 

@@ -5,7 +5,7 @@ import ErrorText from "~/components/Typography/ErrorText";
 export type InputProps = {
   label?: string;
   id: string;
-  placeholder?: string;
+  placeholder?: string | number;
   helperText?: string;
   type?: string;
   readOnly?: boolean;
@@ -20,6 +20,7 @@ export default function Input({
   type = "text",
   readOnly = false,
   validation,
+  className = "",
   ...rest
 }: InputProps) {
   const {
@@ -28,7 +29,7 @@ export default function Input({
   } = useFormContext();
 
   return (
-    <div className="form-control w-full">
+    <div className={`${className} form-control w-full`}>
       {label && (
         <label className="label" htmlFor={id}>
           <span className="label-text text-base-content">{label}</span>

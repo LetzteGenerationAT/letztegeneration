@@ -1,13 +1,13 @@
-import { FieldErrors, FieldValues } from 'react-hook-form'
+import { type FieldErrors, type FieldValues } from "react-hook-form";
 
 export default function ErrorText({
   helperText,
   errors,
   id,
 }: {
-  helperText?: string
-  errors: FieldErrors<FieldValues>
-  id: string
+  helperText?: string;
+  errors: FieldErrors<FieldValues>;
+  id: string;
 }) {
   return (
     <div className="mt-1">
@@ -18,5 +18,5 @@ export default function ErrorText({
         </span>
       )}
     </div>
-  )
+  );
 }

@@ -1,4 +1,4 @@
-import { type UserRole, UserStatus } from "@prisma/client";
+import { UserStatus } from "@prisma/client";
 import _ from "lodash";
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
@@ -35,50 +35,54 @@ export const userRouter = createTRPCRouter({
         data: input,
       });
     }),
-  getUsersByAttribute: protectedProcedure
+  getUsersWithRingerNotesByAttribute: protectedProcedure
     .input(
       z.object({
         attribute: z.string().optional(),
         value: z.string().optional(),
+        status: z.nativeEnum(UserStatus),
+        amount: z.number().positive(),
       })
     )
     .query(({ ctx, input }) => {
-      if (
-        _.isUndefined(input.value) ||
-        _.isEmpty(input.value) ||
-        _.isUndefined(input.attribute) ||
-        !_.includes(
-          [
-            "email",
-            "givenName",
-            "familyName",
-            "pronouns",
-            "region",
-            "possibleSupportRoles",
-            "protestDegree",
-          ],
-          input.attribute
-        )
-      ) {
-        return ctx.prisma.user.findMany({
-          where: {
-            status: {
-              equals: UserStatus.Pending,
+      if (!_.isUndefined(input.attribute) && !_.isUndefined(input.status)) {
+        if (input.attribute === "status") {
+          return ctx.prisma.user.findMany({
+            take: input.amount ?? 25,
+            where: {
+              status: UserStatus[input.status ?? "Pending"],
             },
-          },
-          orderBy: {
-            createdAt: "desc",
-          },
-          take: 20,
-        });
+            include: {
+              _count: {
+                select: {
+                  ringerNotes: true,
+                },
+              },
+            },
+            orderBy: {
+              createdAt: "desc",
+            },
+          });
+        } else {
+          return ctx.prisma.user.findMany({
+            take: input.amount ?? 25,
+            where: {
+              [input.attribute]: {
+                contains: input.value ?? "",
+              },
+            },
+            include: {
+              _count: {
+                select: {
+                  ringerNotes: true,
+                },
+              },
+            },
+            orderBy: {
+              createdAt: "desc",
+            },
+          });
+        }
       }
-      return ctx.prisma.user.findMany({
-        where: {
-          [input.attribute]: {
-            contains: input.value,
-            mode: "insensitive",
-          },
-        },
-      });
     }),
 });
