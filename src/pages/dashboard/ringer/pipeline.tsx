@@ -17,10 +17,11 @@ import {
 } from "react-hook-form";
 import InputWithButton from "~/components/Input/InputWithButton";
 import Input from "~/components/Input/Input";
-// import { showNotification } from '../common/headerSlice';
 
 const getStatus = (index: UserStatus) => {
   if (index === "Pending") return <div className="badge-ghost badge">NEU</div>;
+  else if (index === "Contacted")
+    return <div className="badge-info badge">Kontaktiert</div>;
   else if (index === "Lectured")
     return <div className="badge-warning badge">Vortrag besucht</div>;
   else if (index === "Trained")
