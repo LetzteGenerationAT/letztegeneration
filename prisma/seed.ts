@@ -84,13 +84,14 @@ const seedEvents = async (n: number = NUMBER) => {
   const events: Prisma.EventCreateManyInput[] = Array(n)
     .fill(null)
     .map(() => {
-      const attendees = faker.helpers.arrayElements(users, 4);
+      // const attendees = faker.helpers.arrayElements(users, 4);
       return {
         name: faker.lorem.words(),
-        description: faker.lorem.paragraphs(),
+        description: faker.lorem.paragraphs(1),
         location: faker.address.streetAddress(true),
         date: faker.date.future(),
         createdById: faker.helpers.arrayElement(users).id,
+        maxAttendees: faker.datatype.number({ min: 1, max: 1000 }),
         // attendeeId: attendees.map((attendee) => attendee.id),
         createdAt: faker.date.recent(14),
       };
