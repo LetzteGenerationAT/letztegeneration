@@ -122,7 +122,7 @@ export default function Ringer() {
         topMargin="mt-2"
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        TopSideButtons={<TopSideButtons setFilter={setFilter} />}
+        topSideButtons={<TopSideButtons setFilter={setFilter} />}
       >
         {/* Leads List in table format loaded from slice after api call */}
         <div className="w-full overflow-x-auto">
@@ -184,7 +184,7 @@ export default function Ringer() {
                               onClick={() =>
                                 setModal({
                                   isOpen: true,
-                                  bodyType: MODAL_BODY_TYPES.LEAD_ADD_NEW,
+                                  bodyType: MODAL_BODY_TYPES.NOTE_ADD_NEW,
                                   size: "lg",
                                   extraObject: user,
                                   title: "Ringer Notizen",
