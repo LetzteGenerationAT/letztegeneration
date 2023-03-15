@@ -102,9 +102,9 @@ export const userRouter = createTRPCRouter({
       orderBy: {
         createdAt: "desc",
       },
+      take: 5,
     });
   }),
-
   countNewUsers: protectedProcedure.query(async ({ ctx }) => {
     return ctx.prisma.user.count({
       where: {
