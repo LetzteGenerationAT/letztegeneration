@@ -32,34 +32,34 @@ import AmountStats from "~/components/Dashboard/Visuals/AmountStats";
 import PageStats from "~/components/Dashboard/Visuals/PageStats";
 import UserChannels from "~/components/Dashboard/Visuals/UserChannels";
 import RingerStats from "~/components/Dashboard/Ringer/RingerStats";
+import SimpleTable from "~/components/Dashboard/Visuals/SimpleTable";
+import _ from "lodash";
+
+type NewlyCreatedUsers = {
+  familyName: string;
+  givenName: string;
+  createdAt: Date;
+};
 
 export default function Ringer() {
   const { data: sessionData } = useSession();
 
-  const { data: newUsers } = api.user.countNewUsers.useQuery(undefined, {
+  const { data: newUsersCount } = api.user.countNewUsers.useQuery(undefined, {
     enabled: sessionData?.user !== undefined,
     onSuccess: (data: number) => data,
   });
 
-  const { data: allUsers } = api.user.countAllUsers.useQuery(undefined, {
+  const { data: allUsersCount } = api.user.countAllUsers.useQuery(undefined, {
     enabled: sessionData?.user !== undefined,
     onSuccess: (data: number) => data,
   });
 
-  const statsData = [
-    {
-      title: "Neue Aktivisti",
-      value: newUsers,
-      icon: <UserPlusIcon className="h-8 w-8" />,
-      //   description: "letzte 24h",
-    },
-    {
-      title: "Alle Aktivisti",
-      value: allUsers,
-      icon: <UserGroupIcon className="h-8 w-8" />,
-      //   description: "Current month",
-    },
-  ];
+  const { data: newlyRegisteredUsers } =
+    api.user.getNewlyRegisteredUsers.useQuery(undefined, {
+      enabled: sessionData?.user !== undefined,
+      onSuccess: (data: User[]) => data,
+    });
+
   return (
     <>
       <Head>
@@ -69,27 +69,46 @@ export default function Ringer() {
       </Head>
       <Layout>
         {/** ---------------------- Different stats content 1 ------------------------- */}
-        <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+        {/* <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
           {statsData.map((d, k) => {
             return <RingerStats key={k} {...d} colorIndex={k} />;
           })}
+        </div> */}
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+          <div className="grid grid-cols-1 gap-6 ">
+            <RingerStats
+              className="w-full"
+              title={{ left: "Neue Aktivisti", right: "Aktivisti" }}
+              value={{ left: newUsersCount ?? 0, right: allUsersCount ?? 0 }}
+              icon={{
+                left: <UserPlusIcon className="h-8 w-8" />,
+                right: <UserGroupIcon className="h-8 w-8" />,
+              }}
+              colorIndex={0}
+              description={{
+                left: "letzte 24h",
+                right: "insgesamt",
+              }}
+            />
+            <SimpleTable<NewlyCreatedUsers>
+              title="Neue Aktivisti"
+              data={
+                (_.map(newlyRegisteredUsers, (user) =>
+                  _.pick(user, ["familyName", "givenName", "createdAt"])
+                ) as NewlyCreatedUsers[]) ?? []
+              }
+              columns={[
+                { label: "Vorname", key: "givenName" },
+                { label: "Nachname", key: "familyName" },
+                { label: "Registriert am", key: "createdAt" },
+              ]}
+            />
+          </div>
+          <div className="grid grid-cols-1 gap-6 ">
+            <LineChart />
+            <LineChart />
+          </div>
         </div>
-
-        {/** ---------------------- Different charts ------------------------- */}
-        <div className="mt-6 grid gap-6 sm:grid-cols-1 lg:grid-cols-2">
-          <LineChart />
-          <BarChart />
-        </div>
-
-        {/** ---------------------- Different stats content 2 ------------------------- */}
-
-        <div className="mt-6 grid gap-6 sm:grid-cols-1 lg:grid-cols-2">
-          <AmountStats />
-          <PageStats />
-        </div>
-
-        {/** ---------------------- User source channels table  ------------------------- */}
-        <UserChannels />
       </Layout>
     </>
   );

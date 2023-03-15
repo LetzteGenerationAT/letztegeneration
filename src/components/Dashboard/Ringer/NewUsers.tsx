@@ -22,7 +22,7 @@ export default function UserChannels({ className }: { className?: string }) {
           <thead>
             <tr>
               <th></th>
-              <th>Source</th>
+              <th>Name</th>
               <th>No of Users</th>
               <th>Conversion</th>
             </tr>

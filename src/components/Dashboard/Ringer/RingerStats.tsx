@@ -4,37 +4,43 @@ export default function RingerStats({
   value,
   description,
   colorIndex,
+  className,
 }: {
-  title: string;
-  icon: React.ReactNode;
-  value?: string;
-  description?: string;
+  title: {
+    left: string;
+    right: string;
+  };
+  icon: {
+    left: React.ReactNode;
+    right: React.ReactNode;
+  };
+  value?: {
+    left: number;
+    right: number;
+  };
+  description?: {
+    left: string;
+    right: string;
+  };
   colorIndex: number;
+  className?: string;
 }) {
-  const COLORS = ["primary", "accent"];
   return (
-    <div className="stats shadow">
+    <div className={`${className ?? ""} stats bg-base-100 shadow`}>
       <div className="stat">
-        {
-          // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-          <div className={`stat-figure text-${COLORS[colorIndex % 2]}`}>
-            {icon}
-          </div>
-        }
-        <div className="stat-title">{title}</div>
-
-        {value === undefined ? (
-          <div
-            className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
-            style={{ "--value": 50 }}
-          ></div>
-        ) : (
-          // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-          <div className={`stat-value text-${COLORS[colorIndex % 2]}`}>
-            {value}
-          </div>
+        <div className="stat-title">{title?.left}</div>
+        <div className="stat-value">{value?.left}</div>
+        {description?.right && (
+          <div className="stat-desc">{description?.left}</div>
         )}
-        <div className="stat-desc">{description}</div>
+      </div>
+
+      <div className="stat">
+        <div className="stat-title">{title?.right}</div>
+        <div className="stat-value">{value?.right}</div>
+        {description?.right && (
+          <div className="stat-desc">{description?.right}</div>
+        )}
       </div>
     </div>
   );
