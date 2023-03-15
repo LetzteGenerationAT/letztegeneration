@@ -6,7 +6,7 @@ import { useState } from "react";
 import _ from "lodash";
 import { api } from "~/utils/api";
 
-export default function Modal({
+export default function RingerModal({
   closeModal,
   extraObject,
 }: {

@@ -39,6 +39,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <>
+      <div className="rounded-none bg-gradient-to-r from-purple-500 to-cyan-400 p-4 text-center text-white">
+        ACHTUNG! Dies ist eine Testumgebung, bitte keine echten Daten verwenden.
+        💚
+      </div>
       {/* Left drawer - containing page content and side bar (always open) */}
       <div className="drawer-mobile drawer">
         <input

@@ -18,7 +18,7 @@ ChartJS.register(
   Legend
 );
 
-export default function BarChart() {
+export default function BarChart({ className }: { className?: string }) {
   const options = {
     responsive: true,
     plugins: {
@@ -63,7 +63,9 @@ export default function BarChart() {
   };
 
   return (
-    <div className="card mt-6 h-80 w-full bg-base-100 p-6 shadow">
+    <div
+      className={`${className ?? ""}card h-80 w-full bg-base-100 p-6 shadow`}
+    >
       {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore

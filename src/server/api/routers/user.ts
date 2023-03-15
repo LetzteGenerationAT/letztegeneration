@@ -85,4 +85,36 @@ export const userRouter = createTRPCRouter({
         }
       }
     }),
+  getNewlyRegisteredUsers: protectedProcedure.query(async ({ ctx }) => {
+    return ctx.prisma.user.findMany({
+      where: {
+        createdAt: {
+          gte: new Date(new Date().getTime() - 24 * 60 * 60 * 1000), // 24 hours ago
+        },
+      },
+      include: {
+        _count: {
+          select: {
+            ringerNotes: true,
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      take: 5,
+    });
+  }),
+  countNewUsers: protectedProcedure.query(async ({ ctx }) => {
+    return ctx.prisma.user.count({
+      where: {
+        createdAt: {
+          gte: new Date(new Date().getTime() - 24 * 60 * 60 * 1000), // 24 hours ago
+        },
+      },
+    });
+  }),
+  countAllUsers: protectedProcedure.query(async ({ ctx }) => {
+    return ctx.prisma.user.count();
+  }),
 });

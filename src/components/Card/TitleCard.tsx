@@ -4,12 +4,12 @@ function TitleCard({
   title,
   children,
   topMargin,
-  TopSideButtons,
+  topSideButtons,
 }: {
   title: string;
   children: React.ReactNode;
   topMargin?: string;
-  TopSideButtons?: React.ReactNode;
+  topSideButtons?: React.ReactNode;
 }) {
   return (
     <div
@@ -18,12 +18,12 @@ function TitleCard({
       }
     >
       {/* Title for Card */}
-      <Subtitle className={TopSideButtons ? "inline-block" : ""}>
+      <Subtitle className={topSideButtons ? "inline-block" : ""}>
         {title}
 
-        {TopSideButtons && (
+        {topSideButtons && (
           /* Top side button, show only if present */
-          <div className="float-right inline-block">{TopSideButtons}</div>
+          <div className="float-right inline-block">{topSideButtons}</div>
         )}
       </Subtitle>
 

@@ -23,7 +23,7 @@ Chart.register(
   Legend
 );
 
-export default function LineChart() {
+export default function LineChart({ className }: { className?: string }) {
   const options = {
     responsive: true,
     plugins: {
@@ -63,7 +63,9 @@ export default function LineChart() {
   };
 
   return (
-    <div className="card bg-base-100 mt-6 h-80 w-full p-6 shadow">
+    <div
+      className={`${className ?? ""} card h-80 w-full bg-base-100 p-6 shadow`}
+    >
       <Line data={data} options={options} />
     </div>
   );
