@@ -9,6 +9,7 @@ import { api } from "~/utils/api";
 import "~/styles/globals.css";
 import moment from "moment";
 import { GERMAN_LOCALE_DEFINITIONS } from "~/utils/moment";
+import toast, { ToastBar, Toaster } from "react-hot-toast";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -26,6 +27,21 @@ const MyApp: AppType<{ session: Session | null }> = ({
   return (
     <SessionProvider session={session}>
       <Component {...pageProps} />
+      <Toaster
+        position="bottom-right"
+        toastOptions={{
+          success: {
+            className: "alert alert-success w-max",
+          },
+          error: {
+            className: "alert alert-error w-max",
+          },
+          loading: {
+            className: "alert alert-info w-max",
+          },
+        }}
+      />
+      ;
     </SessionProvider>
   );
 };

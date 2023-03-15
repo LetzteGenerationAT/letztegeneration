@@ -1,30 +1,28 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type Event } from "@prisma/client";
 import moment from "moment";
-import { useSession } from "next-auth/react";
-import { type SetStateAction } from "react";
 import {
   type FieldValues,
   FormProvider,
   type SubmitHandler,
   useForm,
 } from "react-hook-form";
+import toast from "react-hot-toast";
 import { z } from "zod";
 import Input from "~/components/Input/Input";
 import Textarea from "~/components/Input/Textarea";
+import { useBoundStore } from "~/store";
 import { api } from "~/utils/api";
 
-export default function CreateNoteForm({
+export default function EventUpdate({
   closeModal,
   extraObject,
-  setEvents,
 }: {
   closeModal: () => void;
   extraObject: Event;
-  setEvents: (value: SetStateAction<Event[]>) => void;
 }) {
-  const { data: sessionData } = useSession();
-  const { mutateAsync } = api.event.createEvent.useMutation();
+  const { mutateAsync } = api.event.updateEvent.useMutation();
+  const updateEvent = useBoundStore((state) => state.updateEvent);
 
   const methods = useForm({
     mode: "onTouched",
@@ -32,7 +30,7 @@ export default function CreateNoteForm({
       z.object({
         name: z.string().min(1).max(30),
         description: z.string().min(1).max(255),
-        date: z.string().min(1).max(16),
+        date: z.date().min(new Date()),
         location: z.string().min(1).max(255),
         maxAttendees: z.number().min(1).max(1000),
       })
@@ -41,19 +39,27 @@ export default function CreateNoteForm({
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     const refinedData = {
-      name: extraObject?.name,
-      description: extraObject?.description,
-      date: extraObject?.date,
-      location: extraObject?.location,
-      maxAttendees: extraObject?.maxAttendees,
+      id: extraObject.id,
+      name: data.name,
+      description: data.description,
+      date: data.date.toISOString(),
+      location: data.location,
+      maxAttendees: data.maxAttendees,
     };
-    console.log("SUBMIT", refinedData);
-    void mutateAsync(refinedData, {
-      onSuccess: (result) => {
-        console.log(data);
-        setEvents((prev: Event[]) => [result, ...prev]);
-      },
-    });
+
+    void toast.promise(
+      mutateAsync(refinedData, {
+        onSuccess: (result) => {
+          updateEvent(result);
+          closeModal();
+        },
+      }),
+      {
+        loading: "Event wird bearbeitet...",
+        success: "Event erfolgreich bearbeitet!",
+        error: "Event konnte nicht bearbeitet werden!",
+      }
+    );
   };
 
   return (
@@ -67,6 +73,9 @@ export default function CreateNoteForm({
           defaultValue={
             moment(extraObject.date).format("YYYY-MM-DDTHH:mm") ?? ""
           }
+          validation={{
+            valueAsDate: true,
+          }}
         />
         <Input
           id="location"
@@ -87,12 +96,13 @@ export default function CreateNoteForm({
           label="Beschreibung"
           defaultValue={extraObject.description ?? ""}
         />
+
         <div className="modal-action">
           <button className="btn-ghost btn" onClick={() => closeModal()}>
-            Cancel
+            ABBRECHEN
           </button>
           <button className="btn-primary btn px-6" type="submit">
-            Save
+            SPEICHERN
           </button>
         </div>
       </form>

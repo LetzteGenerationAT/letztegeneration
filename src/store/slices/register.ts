@@ -14,12 +14,9 @@ interface RegisterSlice {
   setRegisterData: ({ step, data }: setRegisterDataType) => void;
 }
 
-const createRegisterSlice: StateCreator<
-  RegisterSlice,
-  [],
-  [],
-  RegisterSlice
-> = (set) => ({
+const registerSlice: StateCreator<RegisterSlice, [], [], RegisterSlice> = (
+  set
+) => ({
   stepOne: null,
   stepTwo: null,
   stepThree: null,
@@ -31,4 +28,4 @@ const createRegisterSlice: StateCreator<
   },
 });
 
-export { createRegisterSlice, type RegisterSlice };
+export { registerSlice, type RegisterSlice };
