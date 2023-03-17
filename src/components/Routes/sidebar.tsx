@@ -25,12 +25,12 @@ type SubMenuRoute = {
 
 const routes = [
   {
-    path: "/dashboard",
+    path: "/",
     icon: <Squares2X2Icon className={iconClasses} />,
     name: "Home",
   },
   {
-    path: "/dashboard/events", // url
+    path: "/events", // url
     icon: <CalendarDaysIcon className={iconClasses} />, // icon component
     name: "Events", // name that appear in Sidebar
   },
@@ -40,24 +40,24 @@ const routes = [
     name: "Ringer", // name that appear in Sidebar
     submenu: [
       {
-        path: "/dashboard/ringer",
+        path: "/ringer",
         icon: <HomeIcon className={submenuIconClasses} />,
         name: "Home",
       },
       {
-        path: "/dashboard/ringer/pipeline",
+        path: "/ringer/pipeline",
         icon: <TableCellsIcon className={submenuIconClasses} />,
         name: "Pipeline",
       },
     ],
   },
   {
-    path: "/dashboard/trainer", // url
+    path: "/trainer", // url
     icon: <UsersIcon className={iconClasses} />, // icon component
     name: "Trainer", // name that appear in Sidebar
   },
   {
-    path: "/dashboard/wiki", // url
+    path: "/wiki", // url
     icon: <BuildingLibraryIcon className={iconClasses} />, // icon component
     name: "Wiki", // name that appear in Sidebar
   },

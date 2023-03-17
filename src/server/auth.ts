@@ -70,7 +70,7 @@ export const authOptions: NextAuthOptions = {
   pages: {
     signOut: "/",
     verifyRequest: "/auth/verify-request",
-    newUser: "/dashboard/profile",
+    newUser: "/profile",
   },
   adapter: PrismaAdapter(prisma),
   providers: [
