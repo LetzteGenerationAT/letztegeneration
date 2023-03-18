@@ -41,7 +41,6 @@ const MyApp: AppType<{ session: Session | null }> = ({
           },
         }}
       />
-      ;
     </SessionProvider>
   );
 };
