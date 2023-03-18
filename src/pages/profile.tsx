@@ -1,6 +1,7 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import { useSession } from "next-auth/react";
+import _ from "lodash";
 import {
   FormProvider,
   type SubmitHandler,
@@ -15,7 +16,7 @@ import Layout from "~/components/Dashboard/Layout";
 import TitleCard from "~/components/Card/TitleCard";
 import Textarea from "~/components/Input/Textarea";
 import Select from "~/components/Input/Select";
-import _ from "lodash";
+import toast from "react-hot-toast";
 
 // const PHONE_REGEX = /^\+[1-9]\d{1,14}$/gim;
 
@@ -28,7 +29,7 @@ const Profile: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
-        <SignIn />
+        <ProfileForm />
       </Layout>
     </>
   );
@@ -36,11 +37,8 @@ const Profile: NextPage = () => {
 
 export default Profile;
 
-const SignIn: React.FC = () => {
-  const { data: user } = useSession({
-    required: true,
-  });
-
+const ProfileForm: React.FC = () => {
+  const { data: user } = api.user.getProfile.useQuery();
   const { mutateAsync } = api.user.updateProfile.useMutation();
 
   const LOGIN_SCHEMA = z.object({
@@ -61,10 +59,11 @@ const SignIn: React.FC = () => {
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     const refinedData = _.pickBy(
       data,
-      (value, key) => value !== "" && _.get(user?.user, key) !== value
+      (value, key) => value !== "" && _.get(user, key) !== value
     );
-    void mutateAsync(
-      {
+
+    void toast.promise(
+      mutateAsync({
         ...refinedData,
         image: _.sample([
           "/images/avatars/avocado-food.svg",
@@ -72,11 +71,11 @@ const SignIn: React.FC = () => {
           "/images/avatars/coffee-cup.svg",
           "/images/avatars/lazybones-sloth.svg",
         ]),
-      },
+      }),
       {
-        onSuccess: (updatedUser) => {
-          console.log("updatedUser", updatedUser);
-        },
+        loading: "Profil wird gespeichert...",
+        success: "Profil erfolgreich gespeichert!",
+        error: "Profil konnte nicht gespeichert werden!",
       }
     );
   };
@@ -89,35 +88,35 @@ const SignIn: React.FC = () => {
             <Input
               label="E-Mail Adresse"
               id="email"
-              defaultValue={user?.user?.email ?? ""}
+              defaultValue={user?.email}
               disabled
             />
             <Input
               label="Telefonnummer"
               id="phoneNumber"
-              defaultValue={user?.user?.phoneNumber}
+              defaultValue={user?.phoneNumber}
             />
             <Input
               label="Vorname"
               id="givenName"
-              defaultValue={user?.user?.givenName}
+              defaultValue={user?.givenName}
             />
             <Input
               label="Nachname"
               id="familyName"
-              defaultValue={user?.user?.familyName}
+              defaultValue={user?.familyName}
             />
             <Input
               label="Pronomen"
               id="pronouns"
               placeholder="sie/ihr, er/ihm, they/them, ..."
-              defaultValue={user?.user?.pronouns}
+              defaultValue={user?.pronouns}
             />
             <Select
               label="Region"
               id="region"
               placeholder="Wähle deine Region"
-              defaultValue={user?.user?.region}
+              defaultValue={user?.region}
             >
               <option value="">Wähle deine Region</option>
               <option value="Wien">Wien</option>
@@ -138,13 +137,13 @@ const SignIn: React.FC = () => {
               label="Welche Support-Rollen könntest du übernehmen?"
               id="possibleSupportRoles"
               placeholder="Photo & Film, Vorträge, Flyern, IT Support, ..."
-              defaultValue={user?.user?.possibleSupportRoles}
+              defaultValue={user?.possibleSupportRoles}
             />
             <Textarea
               label="Wie weit bist du bereit mit deinem Protest zu gehen?"
               id="protestDegree"
               placeholder="benötige weitere Informationen, einmalige Festnahme, mehrere Festnahmen, ..."
-              defaultValue={user?.user?.protestDegree}
+              defaultValue={user?.protestDegree}
             />
           </div>
           <div className="divider"></div>
