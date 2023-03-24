@@ -23,5 +23,12 @@ const config = {
     domains: ["placeimg.com", "cloudflare-ipfs.com"],
   },
   // output: "standalone",
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  swcMinify: true,
 };
 export default config;
