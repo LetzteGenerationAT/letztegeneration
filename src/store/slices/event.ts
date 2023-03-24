@@ -3,7 +3,7 @@ import { type Event } from "@prisma/client";
 import _ from "lodash";
 
 interface EventsSlice {
-  events: Event | null;
+  events: Event[];
   addEvent: (event: Event) => void;
   removeEvent: (id: string) => void;
   updateEvent: (event: Event) => void;
@@ -11,11 +11,11 @@ interface EventsSlice {
 }
 
 const eventsSlice: StateCreator<EventsSlice, [], [], EventsSlice> = (set) => ({
-  events: null,
-  setEvents: (events: Event[]) => {
+  events: [],
+  setEvents: (event: Event[]) => {
     set((state: EventsSlice) => ({
       ...state,
-      events,
+      events: event,
     }));
   },
   addEvent: (event: Event) => {

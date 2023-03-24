@@ -44,7 +44,8 @@ declare module "next-auth/jwt" {
  */
 export const authOptions: NextAuthOptions = {
   pages: {
-    signOut: "/",
+    signIn: "/auth/signin",
+    signOut: "/auth/signin",
     verifyRequest: "/auth/verify-request",
     newUser: "/profile",
   },
@@ -78,7 +79,6 @@ export const authOptions: NextAuthOptions = {
         token.role = user.role;
         token.email = user.email;
       }
-
       return token;
     },
     session: ({ session, token }) => {

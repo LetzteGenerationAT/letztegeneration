@@ -11,12 +11,6 @@ import SimpleTable from "~/components/Dashboard/Visuals/SimpleTable";
 import UserGroupIcon from "@heroicons/react/24/outline/UserGroupIcon";
 import UserPlusIcon from "@heroicons/react/24/outline/UserPlusIcon";
 
-type NewlyCreatedUsers = {
-  familyName: string;
-  givenName: string;
-  createdAt: Date;
-};
-
 export default function Ringer() {
   const { data: sessionData } = useSession();
 
@@ -66,12 +60,12 @@ export default function Ringer() {
                 right: "insgesamt",
               }}
             />
-            <SimpleTable<NewlyCreatedUsers>
+            <SimpleTable
               title="Neue Aktivisti"
               data={
-                (_.map(newlyRegisteredUsers, (user) =>
+                _.map(newlyRegisteredUsers, (user) =>
                   _.pick(user, ["familyName", "givenName", "createdAt"])
-                ) as NewlyCreatedUsers[]) ?? []
+                ) ?? []
               }
               columns={[
                 { label: "Vorname", key: "givenName" },

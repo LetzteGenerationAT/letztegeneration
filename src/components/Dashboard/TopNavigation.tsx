@@ -177,7 +177,7 @@ export default function TopNavigation() {
           <label tabIndex={0} className="btn-ghost btn-circle avatar btn">
             <div className="w-10 rounded-full">
               <Image
-                src={user?.user.image ?? "https://placeimg.com/80/80/people"}
+                src={user?.user?.image ?? "https://placeimg.com/80/80/people"}
                 alt="profile"
                 width={40}
                 height={40}

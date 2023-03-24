@@ -3,6 +3,7 @@ import { exampleRouter } from "~/server/api/routers/example";
 import { userRouter } from "~/server/api/routers/user";
 import { ringerRouter } from "~/server/api/routers/ringer";
 import { eventRouter } from "~/server/api/routers/event";
+import { affinityGroupRouter } from "~/server/api/routers/affinityGroup";
 
 /**
  * This is the primary router for your server.
@@ -14,6 +15,7 @@ export const appRouter = createTRPCRouter({
   user: userRouter,
   ringer: ringerRouter,
   event: eventRouter,
+  affinityGroup: affinityGroupRouter,
 });
 
 // export type definition of API

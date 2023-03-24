@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import moment from "moment";
 import { useSession } from "next-auth/react";
 import TitleCard from "~/components/Card/TitleCard";
@@ -47,10 +48,10 @@ const TopSideButtons = ({
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setFilter({
-      attribute: String(data.attribute),
-      value: String(data.value),
-      status: data.status as UserStatus,
-      amount: Number(data.amount),
+      attribute: data.attribute,
+      value: data.value,
+      status: data.status,
+      amount: data.amount,
     });
   };
 
@@ -179,6 +180,20 @@ export default function Ringer() {
                           className="dropdown-content menu rounded-box w-52 bg-base-200 p-2 shadow"
                         >
                           <li>
+                            <button
+                              // href={`mailto:${user.email}}`}
+                              onClick={() =>
+                                setModal({
+                                  isOpen: true,
+                                  bodyType: MODAL_BODY_TYPES.USER_EDIT_EXISTING,
+                                  size: "lg",
+                                  extraObject: user,
+                                  title: "Profil Bearbeiten",
+                                })
+                              }
+                            >
+                              Bearbeiten
+                            </button>
                             <button
                               // href={`mailto:${user.email}}`}
                               onClick={() =>

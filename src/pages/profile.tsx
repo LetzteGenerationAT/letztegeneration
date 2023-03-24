@@ -1,26 +1,16 @@
-import { type NextPage } from "next";
 import Head from "next/head";
-import { useSession } from "next-auth/react";
 import _ from "lodash";
-import {
-  FormProvider,
-  type SubmitHandler,
-  useForm,
-  type FieldValues,
-} from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { api } from "~/utils/api";
-import Input from "~/components/Input/Input";
 import Layout from "~/components/Dashboard/Layout";
 import TitleCard from "~/components/Card/TitleCard";
-import Textarea from "~/components/Input/Textarea";
-import Select from "~/components/Input/Select";
-import toast from "react-hot-toast";
+import ProfileForm from "~/components/Profile/ProfileForm";
+import { useSession } from "next-auth/react";
 
 // const PHONE_REGEX = /^\+[1-9]\d{1,14}$/gim;
 
-const Profile: NextPage = () => {
+export default function Profile() {
+  const { data: sessionData } = useSession();
+  const id = sessionData?.user?.id;
+
   return (
     <>
       <Head>
@@ -29,146 +19,16 @@ const Profile: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout>
-        <ProfileForm />
+        <TitleCard title="Profil Einstellungen" topMargin="mt-2">
+          {_.isNil(id) ? (
+            <div className="flex flex-col items-center justify-center">
+              <h1 className="text-2xl font-bold">No ID provided</h1>
+            </div>
+          ) : (
+            <ProfileForm id={id} />
+          )}
+        </TitleCard>
       </Layout>
     </>
   );
-};
-
-export default Profile;
-
-const ProfileForm: React.FC = () => {
-  const { data: user } = api.user.getProfile.useQuery();
-  const { mutateAsync } = api.user.updateProfile.useMutation();
-
-  const LOGIN_SCHEMA = z.object({
-    phoneNumber: z.coerce.string().max(13),
-    givenName: z.string().max(255),
-    familyName: z.string().max(255),
-    pronouns: z.string().max(255),
-    region: z.string().max(255),
-    possibleSupportRoles: z.string().max(255),
-    protestDegree: z.string().max(255),
-  });
-
-  const methods = useForm({
-    mode: "onTouched",
-    resolver: zodResolver(LOGIN_SCHEMA),
-  });
-
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    const refinedData = _.pickBy(
-      data,
-      (value, key) => value !== "" && _.get(user, key) !== value
-    );
-
-    void toast.promise(
-      mutateAsync({
-        ...refinedData,
-        image: _.sample([
-          "/images/avatars/avocado-food.svg",
-          "/images/avatars/cacti-cactus.svg",
-          "/images/avatars/coffee-cup.svg",
-          "/images/avatars/lazybones-sloth.svg",
-        ]),
-      }),
-      {
-        loading: "Profil wird gespeichert...",
-        success: "Profil erfolgreich gespeichert!",
-        error: "Profil konnte nicht gespeichert werden!",
-      }
-    );
-  };
-
-  return (
-    <TitleCard title="Profil Einstellungen" topMargin="mt-2">
-      <FormProvider {...methods}>
-        <form onSubmit={methods.handleSubmit(onSubmit)} className="w-full">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            <Input
-              label="E-Mail Adresse"
-              id="email"
-              defaultValue={user?.email}
-              disabled
-            />
-            <Input
-              label="Telefonnummer"
-              id="phoneNumber"
-              defaultValue={user?.phoneNumber}
-            />
-            <Input
-              label="Vorname"
-              id="givenName"
-              defaultValue={user?.givenName}
-            />
-            <Input
-              label="Nachname"
-              id="familyName"
-              defaultValue={user?.familyName}
-            />
-            <Input
-              label="Pronomen"
-              id="pronouns"
-              placeholder="sie/ihr, er/ihm, they/them, ..."
-              defaultValue={user?.pronouns}
-            />
-            <Select
-              label="Region"
-              id="region"
-              placeholder="Wähle deine Region"
-              defaultValue={user?.region}
-            >
-              <option value="">Wähle deine Region</option>
-              <option value="Wien">Wien</option>
-              <option value="Niederösterreich">Niederösterreich</option>
-              <option value="Oberösterreich">Oberösterreich</option>
-              <option value="Steiermark">Steiermark</option>
-              <option value="Kärnten">Kärnten</option>
-              <option value="Tirol">Tirol</option>
-              <option value="Vorarlberg">Vorarlberg</option>
-              <option value="Salzburg">Salzburg</option>
-              <option value="Burgenland">Burgenland</option>
-            </Select>
-          </div>
-          <div className="divider"></div>
-
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            <Textarea
-              label="Welche Support-Rollen könntest du übernehmen?"
-              id="possibleSupportRoles"
-              placeholder="Photo & Film, Vorträge, Flyern, IT Support, ..."
-              defaultValue={user?.possibleSupportRoles}
-            />
-            <Textarea
-              label="Wie weit bist du bereit mit deinem Protest zu gehen?"
-              id="protestDegree"
-              placeholder="benötige weitere Informationen, einmalige Festnahme, mehrere Festnahmen, ..."
-              defaultValue={user?.protestDegree}
-            />
-          </div>
-          <div className="divider"></div>
-
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            <Input
-              label="Zugewiesene Support-Rolle(n)"
-              id="supportRoles"
-              disabled
-              // defaultValue={user?.user?.supportRoles}
-            />
-            <Input
-              label="Zugewiesene Bezugsgruppe"
-              id="affinityGroup"
-              disabled
-              // defaultValue={user?.user?.affinityGroup}
-            />
-          </div>
-          <div className="mt-16">
-            <button type="submit" className="btn-primary btn float-right">
-              Speichern
-            </button>
-          </div>
-        </form>
-      </FormProvider>
-    </TitleCard>
-  );
-};
+}

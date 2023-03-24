@@ -7,6 +7,56 @@ export const userRouter = createTRPCRouter({
   getAllUsers: protectedProcedure.query(({ ctx }) => {
     return ctx.prisma.user.findMany();
   }),
+  getUserById: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .query(({ ctx, input }) => {
+      return ctx.prisma.user.findUnique({
+        where: {
+          id: input.id,
+        },
+      });
+    }),
+  updateUser: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        phoneNumber: z.string().optional(),
+        givenName: z.string().optional(),
+        familyName: z.string().optional(),
+        pronouns: z.string().optional(),
+        region: z.string().optional(),
+        possibleSupportRoles: z.string().optional(),
+        protestDegree: z.string().optional(),
+        affinityGroupId: z.string().optional(),
+        image: z.string().optional(),
+      })
+    )
+    .mutation(({ ctx, input }) => {
+      return ctx.prisma.user.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          phoneNumber: input.phoneNumber,
+          givenName: input.givenName,
+          familyName: input.familyName,
+          pronouns: input.pronouns,
+          region: input.region,
+          possibleSupportRoles: input.possibleSupportRoles,
+          protestDegree: input.protestDegree,
+          image: input.image,
+          affinityGroup: {
+            connect: {
+              id: input.affinityGroupId,
+            },
+          },
+        },
+      });
+    }),
   getProfile: protectedProcedure.query(({ ctx }) => {
     return ctx.prisma.user.findUnique({
       where: {
@@ -14,6 +64,7 @@ export const userRouter = createTRPCRouter({
       },
     });
   }),
+
   updateProfile: protectedProcedure
     .input(
       z.object({

@@ -1,12 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type Event } from "@prisma/client";
 import moment from "moment";
-import {
-  type FieldValues,
-  FormProvider,
-  type SubmitHandler,
-  useForm,
-} from "react-hook-form";
+import { type FieldValues, FormProvider, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
 import Input from "~/components/Input/Input";
@@ -37,33 +35,34 @@ export default function EventCreate({
     ),
   });
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    const refinedData = {
-      name: data?.name,
-      description: data?.description,
-      date: data?.date?.toISOString(),
-      location: data?.location,
-      maxAttendees: data?.maxAttendees,
-    };
-
+  const onSubmit = methods.handleSubmit((data: FieldValues) => {
     void toast.promise(
-      mutateAsync(refinedData, {
-        onSuccess: (result) => {
-          addEvent(result);
-          closeModal();
+      mutateAsync(
+        {
+          name: data.name,
+          description: data.description,
+          date: data.date.toISOString(),
+          location: data.location,
+          maxAttendees: data.maxAttendees,
         },
-      }),
+        {
+          onSuccess: (result) => {
+            addEvent(result);
+            closeModal();
+          },
+        }
+      ),
       {
         loading: "Event wird erstellt...",
         success: "Event erfolgreich erstellt!",
         error: "Event konnte nicht erstellt werden!",
       }
     );
-  };
+  });
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)} className="w-full">
+      <form onSubmit={onSubmit} className="w-full">
         <Input id="name" label="Name" defaultValue={extraObject.name ?? ""} />
         <Input
           id="date"

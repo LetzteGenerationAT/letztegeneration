@@ -1,10 +1,11 @@
 import { useBoundStore } from "~/store";
 import { MODAL_BODY_TYPES } from "~/utils/globalConstantUtil";
-import RingerModal from "~/components/Dashboard/Ringer/RingerModal";
+import NoteModal from "~/components/Dashboard/Ringer/NoteModal";
 import EventView from "~/components/Dashboard/Events/EventView";
 import EventConfirmDeletion from "~/components/Dashboard/Events/EventDelete";
 import EventUpdate from "~/components/Dashboard/Events/EventUpdate";
 import EventCreate from "./Dashboard/Events/EventCreate";
+import UserModal from "./Dashboard/Ringer/UserModal";
 
 function ModalLayout() {
   const modal = useBoundStore((state) => state.modal);
@@ -41,8 +42,14 @@ function ModalLayout() {
           {
             {
               [MODAL_BODY_TYPES.NOTE_ADD_NEW]: (
-                <RingerModal
+                <NoteModal
                   closeModal={close}
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                  extraObject={modal.extraObject}
+                />
+              ),
+              [MODAL_BODY_TYPES.USER_EDIT_EXISTING]: (
+                <UserModal
                   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                   extraObject={modal.extraObject}
                 />
