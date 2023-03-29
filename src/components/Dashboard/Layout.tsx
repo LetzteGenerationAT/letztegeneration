@@ -66,7 +66,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       {/* <RightSidebar setIsOpen={changeRightDrawerStatus} isOpen={rightDrawerIsOpen} /> */}
       {/** Notification layout container */}
       {/* <NotificationContainer /> */}
-
       <Modal />
     </>
   );

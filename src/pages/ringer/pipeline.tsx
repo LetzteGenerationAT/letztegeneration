@@ -39,7 +39,7 @@ const TopSideButtons = ({
     attribute: string;
     value: string;
     status: UserStatus;
-    amount: number;
+    amount: string;
   }) => void;
 }) => {
   const methods = useForm({
@@ -78,7 +78,7 @@ const TopSideButtons = ({
           </Select>
           <Input
             id="amount"
-            defaultValue={25}
+            defaultValue="25"
             type="number"
             className="w-fit"
           />
@@ -97,7 +97,7 @@ export default function Ringer() {
     attribute: "status",
     value: "",
     status: UserStatus.Pending,
-    amount: 25,
+    amount: "25",
   });
   const setModal = useBoundStore((state) => state.setModal);
 
@@ -127,7 +127,7 @@ export default function Ringer() {
       >
         {/* Leads List in table format loaded from slice after api call */}
         <div className="w-full overflow-x-auto">
-          <table className="table h-full w-full overflow-hidden">
+          <table className="table w-full overflow-hidden">
             <thead>
               <tr>
                 <th>Name</th>
@@ -181,7 +181,6 @@ export default function Ringer() {
                         >
                           <li>
                             <button
-                              // href={`mailto:${user.email}}`}
                               onClick={() =>
                                 setModal({
                                   isOpen: true,
@@ -193,6 +192,20 @@ export default function Ringer() {
                               }
                             >
                               Bearbeiten
+                            </button>
+                            <button
+                              onClick={() =>
+                                setModal({
+                                  isOpen: true,
+                                  bodyType:
+                                    MODAL_BODY_TYPES.USER_EDIT_AFFINITYGROUP,
+                                  size: "md",
+                                  extraObject: user,
+                                  title: "Bezugsgruppe",
+                                })
+                              }
+                            >
+                              Bezugsgruppe
                             </button>
                             <button
                               // href={`mailto:${user.email}}`}

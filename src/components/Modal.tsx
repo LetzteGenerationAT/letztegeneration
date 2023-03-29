@@ -6,6 +6,7 @@ import EventConfirmDeletion from "~/components/Dashboard/Events/EventDelete";
 import EventUpdate from "~/components/Dashboard/Events/EventUpdate";
 import EventCreate from "./Dashboard/Events/EventCreate";
 import UserModal from "./Dashboard/Ringer/UserModal";
+import AffinityGroupModal from "./Dashboard/Ringer/AffinityGroupModal";
 
 function ModalLayout() {
   const modal = useBoundStore((state) => state.modal);
@@ -50,6 +51,12 @@ function ModalLayout() {
               ),
               [MODAL_BODY_TYPES.USER_EDIT_EXISTING]: (
                 <UserModal
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                  extraObject={modal.extraObject}
+                />
+              ),
+              [MODAL_BODY_TYPES.USER_EDIT_AFFINITYGROUP]: (
+                <AffinityGroupModal
                   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                   extraObject={modal.extraObject}
                 />

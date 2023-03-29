@@ -24,14 +24,8 @@ function NoIdProvided() {
 }
 
 export default function ProfileForm({ id }: { id: string }) {
-  const { data: sessionData } = useSession();
   const { data: user } = api.user.getUserById.useQuery({ id });
-  const { data: affinityGroups } = api.affinityGroup.getAll.useQuery();
-  const { mutateAsync } = api.user.updateUser.useMutation();
-
-  console.log(affinityGroups);
-
-  const isOwnProfile = sessionData?.user?.id === id;
+  const { mutateAsync } = api.user.update.useMutation();
 
   const LOGIN_SCHEMA = z.object({
     phoneNumber: z.coerce.string().max(13),
@@ -58,6 +52,8 @@ export default function ProfileForm({ id }: { id: string }) {
     defaultValues.region = user?.region;
     defaultValues.possibleSupportRoles = user?.possibleSupportRoles;
     defaultValues.protestDegree = user?.protestDegree;
+    defaultValues.supportRoles = user?.supportRoles;
+    defaultValues.affinityGroup = user?.affinityGroup?.name;
     methods.reset({ ...defaultValues });
   }, [methods, user]);
 
@@ -70,12 +66,6 @@ export default function ProfileForm({ id }: { id: string }) {
       mutateAsync({
         ...refinedData,
         id,
-        image: _.sample([
-          "/images/avatars/avocado-food.svg",
-          "/images/avatars/cacti-cactus.svg",
-          "/images/avatars/coffee-cup.svg",
-          "/images/avatars/lazybones-sloth.svg",
-        ]),
       }),
       {
         loading: "Profil wird gespeichert...",
@@ -129,31 +119,8 @@ export default function ProfileForm({ id }: { id: string }) {
         </div>
         <div className="divider"></div>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-          {isOwnProfile ? (
-            <>
-              <Input
-                label="Zugewiesene Support-Rolle(n)"
-                id="supportRoles"
-                disabled
-              />
-              <Input
-                label="Zugewiesene Bezugsgruppe"
-                id="affinityGroup"
-                disabled
-              />
-            </>
-          ) : (
-            <>
-              <Input label="Support-Rolle(n)" id="supportRoles" />
-              <Select id="affinityGroup" label="Bezugsgruppe">
-                {affinityGroups?.map((group) => (
-                  <option key={group.id} value={group.id}>
-                    {group.name}
-                  </option>
-                ))}
-              </Select>
-            </>
-          )}
+          <Input label="Support-Rolle(n)" id="supportRoles" disabled />
+          <Input label="Zugewiesene Bezugsgruppe" id="affinityGroup" disabled />
         </div>
 
         <div className="mt-16">

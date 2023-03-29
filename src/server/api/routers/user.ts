@@ -18,9 +18,12 @@ export const userRouter = createTRPCRouter({
         where: {
           id: input.id,
         },
+        include: {
+          affinityGroup: true,
+        },
       });
     }),
-  updateUser: protectedProcedure
+  update: protectedProcedure
     .input(
       z.object({
         id: z.string(),
@@ -31,7 +34,6 @@ export const userRouter = createTRPCRouter({
         region: z.string().optional(),
         possibleSupportRoles: z.string().optional(),
         protestDegree: z.string().optional(),
-        affinityGroupId: z.string().optional(),
         image: z.string().optional(),
       })
     )
@@ -49,11 +51,6 @@ export const userRouter = createTRPCRouter({
           possibleSupportRoles: input.possibleSupportRoles,
           protestDegree: input.protestDegree,
           image: input.image,
-          affinityGroup: {
-            connect: {
-              id: input.affinityGroupId,
-            },
-          },
         },
       });
     }),
@@ -64,7 +61,6 @@ export const userRouter = createTRPCRouter({
       },
     });
   }),
-
   updateProfile: protectedProcedure
     .input(
       z.object({
@@ -92,14 +88,14 @@ export const userRouter = createTRPCRouter({
         attribute: z.string().optional(),
         value: z.string().optional(),
         status: z.nativeEnum(UserStatus),
-        amount: z.number().positive(),
+        amount: z.string(),
       })
     )
     .query(({ ctx, input }) => {
       if (!_.isUndefined(input.attribute) && !_.isUndefined(input.status)) {
         if (input.attribute === "status") {
           return ctx.prisma.user.findMany({
-            take: input.amount ?? 25,
+            take: _.toInteger(input.amount ?? 25),
             where: {
               status: UserStatus[input.status ?? "Pending"],
             },
@@ -116,7 +112,7 @@ export const userRouter = createTRPCRouter({
           });
         } else {
           return ctx.prisma.user.findMany({
-            take: input.amount ?? 25,
+            take: _.toInteger(input.amount ?? 25),
             where: {
               [input.attribute]: {
                 contains: input.value ?? "",
