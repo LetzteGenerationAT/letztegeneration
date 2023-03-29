@@ -22,7 +22,6 @@ const config = {
   images: {
     domains: ["placeimg.com", "cloudflare-ipfs.com"],
   },
-  // output: "standalone",
   typescript: {
     ignoreBuildErrors: true,
   },
