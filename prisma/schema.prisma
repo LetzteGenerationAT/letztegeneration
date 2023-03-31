@@ -67,12 +67,12 @@ enum UserStatus {
 }
 
 model User {
-    id                   String       @id @default(cuid()) @db.VarChar(30)
-    role                 UserRole     @default(User)
-    status               UserStatus   @default(Pending)
-    email                String?      @unique
+    id                   String         @id @default(cuid()) @db.VarChar(30)
+    role                 UserRole       @default(User)
+    status               UserStatus     @default(Pending)
+    email                String?        @unique
     emailVerified        DateTime?
-    phoneNumber          String?      @unique
+    phoneNumber          String?        @unique
     givenName            String?
     familyName           String?
     pronouns             String?
@@ -83,14 +83,15 @@ model User {
     protestDegree        String?
     accounts             Account[]
     sessions             Session[]
-    ringerNotes          RingerNote[] @relation(name: "user")
-    createdRingerNotes   RingerNote[] @relation(name: "ringer")
+    ringerNotes          RingerNote[]   @relation(name: "user")
+    createdRingerNotes   RingerNote[]   @relation(name: "ringer")
     events               Event[]
-    createdEvents        Event[]      @relation(name: "createdBy")
+    createdEvents        Event[]        @relation(name: "createdBy")
+    affinityGroupId      String?
+    affinityGroup        AffinityGroup? @relation(fields: [affinityGroupId], references: [id])
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    eventId   String?  @db.VarChar(30)
 }
 
 model RingerNote {
@@ -118,6 +119,12 @@ model Event {
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+}
+
+model AffinityGroup {
+    id      String @id @default(cuid()) @db.VarChar(30)
+    name    String
+    members User[]
 }
 
 model VerificationToken {

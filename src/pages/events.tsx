@@ -3,11 +3,11 @@ import Layout from "~/components/Dashboard/Layout";
 import PlusIcon from "@heroicons/react/24/outline/PlusIcon";
 import { type Event } from "@prisma/client";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
 import { api } from "~/utils/api";
 import EventCard from "~/components/Dashboard/Events/EventCard";
 import { useBoundStore } from "~/store";
 import { MODAL_BODY_TYPES } from "~/utils/globalConstantUtil";
+import _ from "lodash";
 
 const TopSideButtons = () => {
   const { data: sessionData } = useSession();
@@ -23,7 +23,7 @@ const TopSideButtons = () => {
             bodyType: MODAL_BODY_TYPES.EVENT_ADD_NEW,
             size: "lg",
             extraObject: sessionData?.user,
-            title: "Neues Event",
+            title: "Event Erstellen",
           })
         }
       >
@@ -36,12 +36,12 @@ const TopSideButtons = () => {
 
 function Events() {
   const { data: sessionData } = useSession();
-  const [events, setEvents] = useState<Event[]>([]);
+  const setEvents = useBoundStore((state) => state.setEvents);
+  const events = useBoundStore((state) => state.events);
 
   api.event.getAllEvents.useQuery(undefined, {
     enabled: sessionData?.user !== undefined,
     onSuccess: (data: Event[]) => {
-      console.log(data);
       setEvents(data);
     },
   });
@@ -50,7 +50,7 @@ function Events() {
     <Layout>
       <TitleCard title="Events" topSideButtons={<TopSideButtons />}>
         {events &&
-          events.map((event: Event, index: number) => {
+          _.map(events, (event: Event, index: number) => {
             return <EventCard event={event} key={index} />;
           })}
       </TitleCard>

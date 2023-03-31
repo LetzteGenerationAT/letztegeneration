@@ -19,7 +19,7 @@ const VerifyRequest: NextPage = () => (
           anzumelden. Wenn du keine E-Mail erhalten hast, überprüfe bitte auch
           deinen Spam Ordner.
         </p>
-        <Link href="/">Zurück zum Login</Link>
+        <Link href="/auth/signin">Zurück zum Login</Link>
       </div>
     </Layout>
   </>

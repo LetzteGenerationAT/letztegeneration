@@ -14,24 +14,24 @@ type Props<T> = {
   title: string;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function SimpleTable<T extends Record<string, any>>({
   data,
   columns,
   className,
   title,
 }: Props<T>) {
-  const keys = columns ?? _.keys(data[0]);
-  const columnLabels = columns?.map((column) => column.label) ?? keys;
-  console.log(data);
+  const columnLabels = columns?.map((column) => column.label);
+
   return (
     <div className={`${className ?? ""} card w-full bg-base-100 p-6 shadow`}>
-      <Subtitle className="mt-2">{title}</Subtitle>{" "}
+      <Subtitle className="mt-2">{title}</Subtitle>
       <div className="divider mt-2"></div>
       <div className="overflow-x-auto">
         <table className="table w-full">
           <thead>
             <tr>
-              {columnLabels.map((label, index) => (
+              {columnLabels?.map((label, index) => (
                 <th key={index}>{label}</th>
               ))}
             </tr>
@@ -39,13 +39,18 @@ export default function SimpleTable<T extends Record<string, any>>({
           <tbody>
             {_.map(data, (item, index) => (
               <tr key={index}>
-                {_.map(keys, (key, index) => (
-                  <td key={index}>
-                    {key.key === "createdAt"
-                      ? moment(item[key.key]).format("DD.MM.YYYY HH:mm")
-                      : item[key.key]}
-                  </td>
-                ))}
+                {_.map(columns, (column, index) => {
+                  console.log(column);
+                  return (
+                    <td key={index}>
+                      {column.key === "createdAt"
+                        ? moment(item[column?.key] as string).format(
+                            "DD.MM.YYYY HH:mm"
+                          )
+                        : item[column.key]}
+                    </td>
+                  );
+                })}
               </tr>
             ))}
           </tbody>

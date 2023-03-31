@@ -1,7 +1,12 @@
 import { useBoundStore } from "~/store";
 import { MODAL_BODY_TYPES } from "~/utils/globalConstantUtil";
-import RingerModal from "~/components/Dashboard/Ringer/RingerModal";
-import EventModal from "~/components/Dashboard/Events/EventModal";
+import NoteModal from "~/components/Dashboard/Ringer/NoteModal";
+import EventView from "~/components/Dashboard/Events/EventView";
+import EventConfirmDeletion from "~/components/Dashboard/Events/EventDelete";
+import EventUpdate from "~/components/Dashboard/Events/EventUpdate";
+import EventCreate from "./Dashboard/Events/EventCreate";
+import UserModal from "./Dashboard/Ringer/UserModal";
+import AffinityGroupModal from "./Dashboard/Ringer/AffinityGroupModal";
 
 function ModalLayout() {
   const modal = useBoundStore((state) => state.modal);
@@ -38,26 +43,49 @@ function ModalLayout() {
           {
             {
               [MODAL_BODY_TYPES.NOTE_ADD_NEW]: (
-                <RingerModal
+                <NoteModal
                   closeModal={close}
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                  extraObject={modal.extraObject}
+                />
+              ),
+              [MODAL_BODY_TYPES.USER_EDIT_EXISTING]: (
+                <UserModal
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                  extraObject={modal.extraObject}
+                />
+              ),
+              [MODAL_BODY_TYPES.USER_EDIT_AFFINITYGROUP]: (
+                <AffinityGroupModal
                   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                   extraObject={modal.extraObject}
                 />
               ),
               [MODAL_BODY_TYPES.EVENT_ADD_NEW]: (
-                <EventModal
+                <EventCreate
                   closeModal={close}
                   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                   extraObject={modal.extraObject}
-                  type="add"
+                />
+              ),
+              [MODAL_BODY_TYPES.EVENT_VIEW_EXISTING]: (
+                <EventView
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                  extraObject={modal.extraObject}
                 />
               ),
               [MODAL_BODY_TYPES.EVENT_EDIT_EXISTING]: (
-                <EventModal
+                <EventUpdate
                   closeModal={close}
                   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                   extraObject={modal.extraObject}
-                  type="edit"
+                />
+              ),
+              [MODAL_BODY_TYPES.EVENT_CONFIRM_DELETION]: (
+                <EventConfirmDeletion
+                  closeModal={close}
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                  extraObject={modal.extraObject}
                 />
               ),
               [MODAL_BODY_TYPES.DEFAULT]: <div></div>,

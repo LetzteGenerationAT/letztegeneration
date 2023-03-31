@@ -7,6 +7,53 @@ export const userRouter = createTRPCRouter({
   getAllUsers: protectedProcedure.query(({ ctx }) => {
     return ctx.prisma.user.findMany();
   }),
+  getUserById: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .query(({ ctx, input }) => {
+      return ctx.prisma.user.findUnique({
+        where: {
+          id: input.id,
+        },
+        include: {
+          affinityGroup: true,
+        },
+      });
+    }),
+  update: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        phoneNumber: z.string().optional(),
+        givenName: z.string().optional(),
+        familyName: z.string().optional(),
+        pronouns: z.string().optional(),
+        region: z.string().optional(),
+        possibleSupportRoles: z.string().optional(),
+        protestDegree: z.string().optional(),
+        image: z.string().optional(),
+      })
+    )
+    .mutation(({ ctx, input }) => {
+      return ctx.prisma.user.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          phoneNumber: input.phoneNumber,
+          givenName: input.givenName,
+          familyName: input.familyName,
+          pronouns: input.pronouns,
+          region: input.region,
+          possibleSupportRoles: input.possibleSupportRoles,
+          protestDegree: input.protestDegree,
+          image: input.image,
+        },
+      });
+    }),
   getProfile: protectedProcedure.query(({ ctx }) => {
     return ctx.prisma.user.findUnique({
       where: {
@@ -41,14 +88,14 @@ export const userRouter = createTRPCRouter({
         attribute: z.string().optional(),
         value: z.string().optional(),
         status: z.nativeEnum(UserStatus),
-        amount: z.number().positive(),
+        amount: z.string(),
       })
     )
     .query(({ ctx, input }) => {
       if (!_.isUndefined(input.attribute) && !_.isUndefined(input.status)) {
         if (input.attribute === "status") {
           return ctx.prisma.user.findMany({
-            take: input.amount ?? 25,
+            take: _.toInteger(input.amount ?? 25),
             where: {
               status: UserStatus[input.status ?? "Pending"],
             },
@@ -65,7 +112,7 @@ export const userRouter = createTRPCRouter({
           });
         } else {
           return ctx.prisma.user.findMany({
-            take: input.amount ?? 25,
+            take: _.toInteger(input.amount ?? 25),
             where: {
               [input.attribute]: {
                 contains: input.value ?? "",

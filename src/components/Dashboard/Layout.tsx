@@ -7,8 +7,8 @@ import LeftSidebar from "~/components/Dashboard/LeftSidebar";
 // import { NotificationContainer, NotificationManager } from 'react-notifications';
 // import "react-notifications/lib/notifications.css";
 import TopNavigation from "~/components/Dashboard/TopNavigation";
-import SuspenseContent from "~/components/Dashboard/SuspenseContent";
 import Modal from "~/components/Modal";
+import { LoadingPage } from "~/components/Loading";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   // const dispatch = useDispatch();
@@ -56,7 +56,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             className="flex-1 overflow-y-auto bg-base-200 px-6  pt-8"
             ref={mainContentRef}
           >
-            <Suspense fallback={<SuspenseContent />}>{children}</Suspense>
+            <Suspense fallback={<LoadingPage />}>{children}</Suspense>
             <div className="h-16"></div>
           </main>
         </div>
@@ -66,7 +66,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       {/* <RightSidebar setIsOpen={changeRightDrawerStatus} isOpen={rightDrawerIsOpen} /> */}
       {/** Notification layout container */}
       {/* <NotificationContainer /> */}
-
       <Modal />
     </>
   );

@@ -12,7 +12,8 @@
     "lint": "next lint",
     "start": "next start",
     "docker:build": "docker build -t letztegeneration --build-arg NEXT_PUBLIC_CLIENTVAR=clientvar .",
-    "docker:run": "docker run -p 3000:3000 -e letztegeneration --env-file .env"
+    "docker:run": "docker run -p 3000:3000 -e letztegeneration --env-file .env",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@codemirror/lang-markdown": "^6.1.0",
@@ -42,6 +43,7 @@
     "react-chartjs-2": "^5.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.43.2",
+    "react-hot-toast": "^2.4.0",
     "react-markdown": "^8.0.5",
     "sharp": "^0.31.3",
     "superjson": "1.9.1",

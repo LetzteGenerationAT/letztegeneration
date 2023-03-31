@@ -6,6 +6,7 @@ import {
   type Prisma,
 } from "@prisma/client";
 import { faker } from "@faker-js/faker/locale/de";
+import _ from "lodash";
 
 const prisma = new PrismaClient();
 
@@ -76,7 +77,7 @@ const seedUsers = async (n: number = NUMBER) => {
       };
     });
   const { count } = await prisma.user.createMany({ data: users });
-  console.log("Seeded", count, "users");
+  console.log("Seeded", count, "Users");
 };
 
 const seedEvents = async (n: number = NUMBER) => {
@@ -97,7 +98,7 @@ const seedEvents = async (n: number = NUMBER) => {
       };
     });
   const { count } = await prisma.event.createMany({ data: events });
-  console.log("Seeded", count, "events");
+  console.log("Seeded", count, "Events");
 };
 
 const seedRingerNotes = async (n: number = NUMBER) => {
@@ -114,6 +115,20 @@ const seedRingerNotes = async (n: number = NUMBER) => {
     });
   const { count } = await prisma.ringerNote.createMany({ data: ringerNotes });
   console.log("Seeded", count, "RingerNotes");
+};
+
+const seedAffinityGroups = async (n: number = NUMBER) => {
+  const affinityGroups: Prisma.AffinityGroupCreateManyInput[] = Array(n)
+    .fill(null)
+    .map(() => {
+      return {
+        name: _.startCase(faker.random.words(2)),
+      };
+    });
+  const { count } = await prisma.affinityGroup.createMany({
+    data: affinityGroups,
+  });
+  console.log("Seeded", count, "AffinityGroups");
 };
 
 // const seedRequests = async (n: number = NUMBER) => {
@@ -299,6 +314,7 @@ const seedRingerNotes = async (n: number = NUMBER) => {
 const cleanup = async () => {
   await prisma.event.deleteMany();
   await prisma.ringerNote.deleteMany();
+  await prisma.affinityGroup.deleteMany();
   await prisma.user.deleteMany({
     where: {
       emailVerified: null,
@@ -311,6 +327,7 @@ async function main() {
   await seedUsers(); // has to run first
   await seedRingerNotes();
   await seedEvents();
+  await seedAffinityGroups();
   // await seedRequests();
   // await seedApplications(NUMBER / 10);
   // await seedDataDashboard();
@@ -321,6 +338,4 @@ main()
     console.error(e);
     process.exit(1);
   })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+  .finally(() => void prisma.$disconnect());

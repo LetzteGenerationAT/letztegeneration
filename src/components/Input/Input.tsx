@@ -10,6 +10,7 @@ export type InputProps = {
   type?: string;
   readOnly?: boolean;
   validation?: RegisterOptions;
+  autocomplete?: string;
 } & React.ComponentPropsWithoutRef<"input">;
 
 export default function Input({
@@ -21,6 +22,7 @@ export default function Input({
   readOnly = false,
   validation,
   className = "",
+  autocomplete = "off",
   ...rest
 }: InputProps) {
   const {
@@ -45,6 +47,7 @@ export default function Input({
         readOnly={readOnly}
         placeholder={placeholder}
         aria-describedby={id}
+        autoComplete={autocomplete}
       />
       {errors[id] && (
         <>
