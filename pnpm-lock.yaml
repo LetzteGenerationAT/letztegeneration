@@ -28,9 +28,11 @@ specifiers:
   autoprefixer: ^10.4.7
   chart.js: ^4.2.1
   codemirror: ^6.0.1
+  csstype: ^3.1.1
   daisyui: ^2.51.0
   eslint: ^8.30.0
   eslint-config-next: 13.1.6
+  gapi-script: ^1.2.0
   lodash: ^4.17.21
   moment: ^2.29.4
   next: 13.1.6
@@ -73,7 +75,9 @@ dependencies:
   '@uiw/react-codemirror': 4.19.9_baspzbimxvs2elm6yopg5vnnpa
   chart.js: 4.2.1
   codemirror: 6.0.1
+  csstype: 3.1.1
   daisyui: 2.51.0_gbtt6ss3tbiz4yjtvdr6fbrj44
+  gapi-script: 1.2.0
   lodash: 4.17.21
   moment: 2.29.4
   next: 13.1.6_biqbaboplfbrettd7655fr4n2y
@@ -83,7 +87,7 @@ dependencies:
   react-chartjs-2: 5.2.0_t5yjg6ab35jnsudnh2qdighszm
   react-dom: 18.2.0_react@18.2.0
   react-hook-form: 7.43.2_react@18.2.0
-  react-hot-toast: 2.4.0_biqbaboplfbrettd7655fr4n2y
+  react-hot-toast: 2.4.0_owo25xnefcwdq3zjgtohz6dbju
   react-markdown: 8.0.5_pmekkgnqduwlme35zpnqhenc34
   sharp: 0.31.3
   superjson: 1.9.1
@@ -2069,6 +2073,10 @@ packages:
     resolution: {integrity: sha512-xckBUXyTIqT97tq2x2AMb+g163b5JFysYk0x4qxNFwbfQkmNZoiRHb6sPzI9/QV33WeuvVYBUIiD4NzNIyqaRQ==}
     dev: true
 
+  /gapi-script/1.2.0:
+    resolution: {integrity: sha512-NKTVKiIwFdkO1j1EzcrWu/Pz7gsl1GmBmgh+qhuV2Ytls04W/Eg5aiBL91SCiBM9lU0PMu7p1hTVxhh1rPT5Lw==}
+    dev: false
+
   /get-intrinsic/1.2.0:
     resolution: {integrity: sha512-L049y6nFOuom5wGyRc3/gdTLO94dySVKRACj1RmJZBQXlbTMhtNIgkWkUHq+jYmZvKf14EW1EoJnnjbmoHij0Q==}
     dependencies:
@@ -2172,10 +2180,12 @@ packages:
     resolution: {integrity: sha512-uHJgbwAMwNFf5mLst7IWLNg14x1CkeqglJb/K3doi4dw6q2IvAAmM/Y81kevy83wP+Sst+nutFTYOGg3d1lsxg==}
     dev: true
 
-  /goober/2.1.12:
+  /goober/2.1.12_csstype@3.1.1:
     resolution: {integrity: sha512-yXHAvO08FU1JgTXX6Zn6sYCUFfB/OJSX8HHjDSgerZHZmFKAb08cykp5LBw5QnmyMcZyPRMqkdyHUSSzge788Q==}
     peerDependencies:
       csstype: ^3.0.10
+    dependencies:
+      csstype: 3.1.1
     dev: false
 
   /gopd/1.0.1:
@@ -3371,14 +3381,14 @@ packages:
       react: 18.2.0
     dev: false
 
-  /react-hot-toast/2.4.0_biqbaboplfbrettd7655fr4n2y:
+  /react-hot-toast/2.4.0_owo25xnefcwdq3zjgtohz6dbju:
     resolution: {integrity: sha512-qnnVbXropKuwUpriVVosgo8QrB+IaPJCpL8oBI6Ov84uvHZ5QQcTp2qg6ku2wNfgJl6rlQXJIQU5q+5lmPOutA==}
     engines: {node: '>=10'}
     peerDependencies:
       react: '>=16'
       react-dom: '>=16'
     dependencies:
-      goober: 2.1.12
+      goober: 2.1.12_csstype@3.1.1
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
     transitivePeerDependencies:

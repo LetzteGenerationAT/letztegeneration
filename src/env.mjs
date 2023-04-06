@@ -19,19 +19,16 @@ const server = z.object({
     process.env.VERCEL ? z.string().min(1) : z.string().url()
   ),
   // Add `.min(1) on ID and SECRET if you want to make sure they're not empty
-  // Next Auth Discord Provider
-  // DISCORD_CLIENT_ID: z.string(),
-  // DISCORD_CLIENT_SECRET: z.string(),
-  // Next Auth Cognito Provider
-  // COGNITO_CLIENT_ID: z.string(),
-  // COGNITO_CLIENT_SECRET: z.string(),
-  // COGNITO_ISSUER: z.string(),
   // Next Auth Email Provider
   EMAIL_SERVER_USER: z.string(),
   EMAIL_SERVER_PASSWORD: z.string(),
   EMAIL_SERVER_HOST: z.string(),
   EMAIL_SERVER_PORT: z.string(),
   EMAIL_FROM: z.string(),
+  // Google Calendar
+  REACT_APP_GOOGLE_API_KEY: z.string(),
+  REACT_APP_GOOGLE_ACCESS_TOKEN: z.string(),
+  REACT_APP_CALENDAR_ID: z.string(),
 });
 
 /**
@@ -53,20 +50,16 @@ const processEnv = {
   NODE_ENV: process.env.NODE_ENV,
   NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
   NEXTAUTH_URL: process.env.NEXTAUTH_URL,
-  // Next Auth Discord Provider
-  // DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
-  // DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
-  // Next Auth Cognito Provider
-  // COGNITO_CLIENT_ID: process.env.COGNITO_CLIENT_ID,
-  // COGNITO_CLIENT_SECRET: process.env.COGNITO_CLIENT_SECRET,
-  // COGNITO_ISSUER: process.env.COGNITO_ISSUER,
   // Next Auth Email Provider
   EMAIL_SERVER_USER: process.env.EMAIL_SERVER_USER,
   EMAIL_SERVER_PASSWORD: process.env.EMAIL_SERVER_PASSWORD,
   EMAIL_SERVER_HOST: process.env.EMAIL_SERVER_HOST,
   EMAIL_SERVER_PORT: process.env.EMAIL_SERVER_PORT,
   EMAIL_FROM: process.env.EMAIL_FROM,
-
+  // Google Calendar
+  REACT_APP_GOOGLE_API_KEY: process.env.REACT_APP_GOOGLE_API_KEY,
+  REACT_APP_GOOGLE_ACCESS_TOKEN: process.env.REACT_APP_GOOGLE_ACCESS_TOKEN,
+  REACT_APP_CALENDAR_ID: process.env.REACT_APP_CALENDAR_ID,
   // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
 };
 
