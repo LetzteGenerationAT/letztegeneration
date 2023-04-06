@@ -15,7 +15,7 @@ export default function LeftSidebar() {
   return (
     <div className="drawer-side">
       <label htmlFor="left-sidebar-drawer" className="drawer-overlay"></label>
-      <ul className="menu w-80 bg-base-100 text-base-content">
+      <ul className="menu h-full w-80 bg-base-100 text-base-content">
         <li className="h-16 text-xl font-semibold">
           <Link href={"/dashboard"}>
             <Image
