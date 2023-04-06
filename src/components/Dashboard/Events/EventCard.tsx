@@ -5,6 +5,8 @@ import { useBoundStore } from "~/store";
 import { api } from "~/utils/api";
 import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
+import _ from "lodash";
+import { eventsSlice } from "~/store/slices/event";
 function CardHeader({ createdAt }: { createdAt: Date }) {
   return (
     <div className="block h-full bg-primary py-4 shadow-inner max-lg:rounded-t-lg lg:w-2/12 lg:rounded-l-lg">
@@ -40,11 +42,13 @@ function CardFooter({
 export default function EventCard({ event }: { event: Event }) {
   const { data: sessionData } = useSession();
   const setModal = useBoundStore((state) => state.setModal);
-  const { mutateAsync } = api.event.attendEvent.useMutation();
+  const { mutateAsync: attendMutation } = api.event.addAttendance.useMutation();
+  const { mutateAsync: revokeMutation } =
+    api.event.revokeAttendance.useMutation();
 
-  const attendEvent = (id: string) => {
+  const addAttendance = (id: string) => {
     void toast.promise(
-      mutateAsync(
+      attendMutation(
         { id: id },
         {
           onSuccess: (result) => {
@@ -60,6 +64,23 @@ export default function EventCard({ event }: { event: Event }) {
     );
   };
 
+  const revokeAttendance = (id: string) => {
+    void toast.promise(
+      revokeMutation(
+        { id: id },
+        {
+          onSuccess: (result) => {
+            console.log(result);
+          },
+        }
+      ),
+      {
+        loading: "Absage wird vermerkt...",
+        success: "Absage erfolgreich vermerkt!",
+        error: "Absage konnte nicht vermerkt werden!",
+      }
+    );
+  };
   return (
     <div className="mb-6 rounded-lg bg-base-200 shadow lg:mb-2 lg:flex">
       <CardHeader createdAt={event.createdAt} />
@@ -85,53 +106,77 @@ export default function EventCard({ event }: { event: Event }) {
           {event.location}
         </p>
       </div>
-      {sessionData?.user?.id === event?.createdById && (
-        <>
-          <button
-            className="block w-full bg-error py-4 lg:w-2/12 "
-            onClick={() => {
-              setModal({
-                isOpen: true,
-                bodyType: MODAL_BODY_TYPES.EVENT_CONFIRM_DELETION,
-                size: "md",
-                extraObject: event,
-                title: "Event Löschen",
-              });
-            }}
-          >
-            <span className="text-md text-md mx-2 rounded px-2 font-bold  text-white">
-              Löschen
-            </span>
-          </button>
-          <button
-            className="block w-full bg-secondary py-4 lg:w-2/12 "
-            onClick={() => {
-              setModal({
-                isOpen: true,
-                bodyType: MODAL_BODY_TYPES.EVENT_EDIT_EXISTING,
-                size: "lg",
-                extraObject: event,
-                title: "Event Bearbeiten",
-              });
-            }}
-          >
-            <span className="text-md text-md mx-2 rounded px-2 font-bold  text-white">
-              Bearbeiten
-            </span>
-          </button>
-        </>
-      )}
-
+      {/* {sessionData?.user?.id === event?.createdById && ( */}
+      <>
+        <button
+          className="block w-full bg-error py-4 lg:w-2/12 "
+          onClick={() => {
+            setModal({
+              isOpen: true,
+              bodyType: MODAL_BODY_TYPES.EVENT_CONFIRM_DELETION,
+              size: "md",
+              extraObject: event,
+              title: "Event Löschen",
+            });
+          }}
+        >
+          <span className="text-md text-md mx-2 rounded px-2 font-bold  text-white">
+            Löschen
+          </span>
+        </button>
+        <button
+          className="block w-full bg-secondary py-4 lg:w-2/12 "
+          onClick={() => {
+            setModal({
+              isOpen: true,
+              bodyType: MODAL_BODY_TYPES.EVENT_EDIT_EXISTING,
+              size: "lg",
+              extraObject: event,
+              title: "Event Bearbeiten",
+            });
+          }}
+        >
+          <span className="text-md text-md mx-2 rounded px-2 font-bold text-white">
+            Bearbeiten
+          </span>
+        </button>
+      </>
+      {/* )} */}
       <button
         className="block w-full bg-primary py-4 max-lg:rounded-b-lg lg:w-2/12 lg:rounded-r-lg"
         onClick={() => {
-          attendEvent(event.id);
+          addAttendance(event.id);
         }}
       >
-        <span className="text-md text-md mx-2 rounded px-2 font-bold  text-white">
+        <span className="text-md text-md mx-2 rounded px-2 font-bold text-white">
           Teilnehmen
         </span>
       </button>
+      {
+      // _.find(event, ) 
+      true ? (
+        <button
+          className="block w-full bg-primary py-4 max-lg:rounded-b-lg lg:w-2/12 lg:rounded-r-lg"
+          onClick={() => {
+            addAttendance(event.id);
+          }}
+        >
+          <span className="text-md text-md mx-2 rounded px-2 font-bold  text-white">
+            Teilnehmen
+          </span>
+        </button>
+      ) : (
+        <button
+          className="block w-full bg-primary py-4 max-lg:rounded-b-lg lg:w-2/12 lg:rounded-r-lg"
+          onClick={() => {
+            revokeAttendance(event.id);
+          }}
+        >
+          <span className="text-md text-md mx-2 rounded px-2 font-bold  text-white">
+            Austragen
+          </span>
+        </button>
+      )}
       {/* <CardFooter
         maxAttendees={event.maxAttendees}
         count={event._count.attendees}

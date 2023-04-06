@@ -83,7 +83,7 @@ export const eventRouter = createTRPCRouter({
       take: 5, // TODO: REMOVE THIS
     });
   }),
-  attendEvent: protectedProcedure
+  addAttendance: protectedProcedure
     .input(
       z.object({
         id: z.string(),
@@ -97,6 +97,26 @@ export const eventRouter = createTRPCRouter({
         data: {
           attendees: {
             connect: {
+              id: ctx.session.user.id,
+            },
+          },
+        },
+      });
+    }),
+  revokeAttendance: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
+    .mutation(({ ctx, input }) => {
+      return ctx.prisma.event.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          attendees: {
+            disconnect: {
               id: ctx.session.user.id,
             },
           },
